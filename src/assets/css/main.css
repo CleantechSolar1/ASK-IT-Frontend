@@ -1,0 +1,22 @@
+/* Base imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .clip-path-polygon {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+
+/* Custom animations for modern UI */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Ensure smooth scrolling across the app */
+html {
+  scroll-behavior: smooth;
+}
