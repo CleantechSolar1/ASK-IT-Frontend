@@ -2,7 +2,7 @@ services:
   - type: static
     name: help-desk-frontend
     env: static
-    buildCommand: NODE_OPTIONS=--max-old-space-size=400 npm install && npm run build
+    buildCommand: npm install && npm run build
     publishPath: dist
     nodeContext:
       version: 20.x
