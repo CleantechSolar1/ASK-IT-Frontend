@@ -1,0 +1,8 @@
+services:
+  - type: static
+    name: help-desk-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    nodeContext:
+      version: 20.x
