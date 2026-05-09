@@ -3,7 +3,7 @@ import { loginApi, signupApi, teamsSSOApi, getMeApi, logoutApi } from "@/api/mod
 const state = {
   user: null,
   isAuthChecked: false, // Prevents flickering before checkAuth finishes
-  teamsToken: null,    // In-memory only — never persisted to disk
+  teamsToken: null,    // In-memory only — covers both Teams SSO and Microsoft OAuth
 };
 
 const mutations = {
@@ -24,6 +24,13 @@ const mutations = {
   SET_TEAMS_TOKEN(state, token) {
     // Stored only in memory — cleared automatically on page refresh
     // (Teams re-runs SSO handshake via main.js on every load)
+    state.teamsToken = token;
+  },
+
+  // Used by AuthCallback.vue after Microsoft OAuth redirect.
+  // Aliased to the same teamsToken field so the axios interceptor
+  // picks it up via Authorization: Bearer for all subsequent requests.
+  SET_TOKEN(state, token) {
     state.teamsToken = token;
   },
 };

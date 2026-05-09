@@ -52,32 +52,46 @@ export default {
   },
   methods: {
     handleCallback() {
-      const { token, user } = this.$route.query;
+      const { token, user, error } = this.$route.query;
 
-      if (token) {
-        this.$store.commit("auth/SET_TOKEN", token);
+      // Handle backend error during OAuth
+      if (error) {
+        console.error("OAuth error from backend:", error);
+        this.$router.push(`/login?error=${encodeURIComponent(error)}`);
+        return;
+      }
 
-        if (user) {
-          try {
-            const userData = JSON.parse(decodeURIComponent(user));
-            this.$store.commit("auth/SET_USER", userData);
+      if (!token) {
+        // No token in redirect — this means the cookie-based flow was attempted
+        // but the cookie was blocked (cross-site Render→Vercel). This should not
+        // happen with the updated backend, but handle gracefully.
+        console.error("Authentication failed: no token in callback URL");
+        this.$router.push("/login?error=auth_failed");
+        return;
+      }
 
-            const role = userData?.role?.toLowerCase();
-            this.$router.push(role === "admin" ? "/dashboard" : "/my-tickets");
-          } catch (e) {
-            console.error("Failed to parse user data from callback:", e);
-            this.$router.push("/login?error=invalid_user_data");
-          }
-        } else {
-          // If no user object is provided from the backend, we might need to
-          // fetch it from some '/auth/me' endpoint. However, if backend
-          // sends user in query params, it will be handled above.
-          this.$router.push("/my-tickets");
+      // Store the JWT in Vuex memory (never localStorage).
+      // The axios interceptor in api/axios.js picks it up and attaches it
+      // as Authorization: Bearer on every subsequent API request.
+      this.$store.commit("auth/SET_TOKEN", token);
+
+      if (user) {
+        try {
+          const userData = JSON.parse(decodeURIComponent(user));
+
+          // SET_USER also sets isAuthChecked = true, so the router's
+          // beforeEach will skip calling checkAuth (which would fail
+          // because the httpOnly cookie is blocked cross-site).
+          this.$store.commit("auth/SET_USER", userData);
+
+          const role = userData?.role?.toLowerCase();
+          this.$router.push(role === "admin" ? "/dashboard" : "/my-tickets");
+        } catch (e) {
+          console.error("Failed to parse user data from callback:", e);
+          this.$router.push("/login?error=invalid_user_data");
         }
       } else {
-        // No token provided, meaning login essentially failed
-        console.error("Authentication failed or missing tokens");
-        this.$router.push("/login?error=auth_failed");
+        this.$router.push("/my-tickets");
       }
     },
   },
