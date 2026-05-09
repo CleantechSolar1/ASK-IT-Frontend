@@ -3,6 +3,7 @@ import { loginApi, signupApi, teamsSSOApi, getMeApi, logoutApi } from "@/api/mod
 const state = {
   user: null,
   isAuthChecked: false, // Prevents flickering before checkAuth finishes
+  teamsToken: null,    // In-memory only — never persisted to disk
 };
 
 const mutations = {
@@ -13,11 +14,18 @@ const mutations = {
 
   LOGOUT(state) {
     state.user = null;
+    state.teamsToken = null;
   },
 
   SET_AUTH_CHECKED(state, status) {
     state.isAuthChecked = status;
-  }
+  },
+
+  SET_TEAMS_TOKEN(state, token) {
+    // Stored only in memory — cleared automatically on page refresh
+    // (Teams re-runs SSO handshake via main.js on every load)
+    state.teamsToken = token;
+  },
 };
 
 const actions = {
@@ -37,8 +45,7 @@ const actions = {
     } catch (e) {
       console.error("Logout API failed", e);
     }
-    localStorage.removeItem("teams_token");
-    commit("LOGOUT");
+    commit("LOGOUT"); // clears teamsToken via mutation
   },
 
   async checkAuth({ commit }) {
@@ -66,11 +73,11 @@ const actions = {
   async loginTeamsSSO({ commit }, token) {
     const res = await teamsSSOApi(token);
     const { user, token: jwtToken } = res.data.data;
-    // Save the JWT to localStorage so the axios interceptor can attach it
-    // via Authorization header on every request. This is required because
-    // Teams runs the app in an iframe where third-party cookies are blocked.
+    // Store JWT in Vuex memory only — never written to localStorage/sessionStorage.
+    // The axios interceptor picks it up from store state and attaches it as
+    // Authorization: Bearer header, bypassing the blocked third-party cookie.
     if (jwtToken) {
-      localStorage.setItem("teams_token", jwtToken);
+      commit("SET_TEAMS_TOKEN", jwtToken);
     }
     commit("SET_USER", user);
   },

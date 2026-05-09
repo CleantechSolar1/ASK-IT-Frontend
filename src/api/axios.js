@@ -6,10 +6,14 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  // In Microsoft Teams iframe context, third-party cookies are blocked by
-  // modern browsers. We store the JWT in localStorage after Teams SSO and
-  // attach it via Authorization header so it reaches the backend.
-  const teamsToken = localStorage.getItem("teams_token");
+  // In Microsoft Teams, the app runs in an iframe where third-party cookies
+  // from the API domain (Render) are blocked by modern browsers.
+  // We store the JWT in Vuex memory (in-memory only, not localStorage) and
+  // attach it as an Authorization header on every request.
+  // Using lazy require() here avoids a circular dependency:
+  //   store → api/modules/auth → axios → store
+  const store = require("@/store").default;
+  const teamsToken = store.state.auth?.teamsToken;
   if (teamsToken) {
     config.headers.Authorization = `Bearer ${teamsToken}`;
   }
