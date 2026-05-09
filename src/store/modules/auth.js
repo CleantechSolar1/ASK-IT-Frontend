@@ -37,6 +37,7 @@ const actions = {
     } catch (e) {
       console.error("Logout API failed", e);
     }
+    localStorage.removeItem("teams_token");
     commit("LOGOUT");
   },
 
@@ -64,7 +65,14 @@ const actions = {
   
   async loginTeamsSSO({ commit }, token) {
     const res = await teamsSSOApi(token);
-    commit("SET_USER", res.data.data.user);
+    const { user, token: jwtToken } = res.data.data;
+    // Save the JWT to localStorage so the axios interceptor can attach it
+    // via Authorization header on every request. This is required because
+    // Teams runs the app in an iframe where third-party cookies are blocked.
+    if (jwtToken) {
+      localStorage.setItem("teams_token", jwtToken);
+    }
+    commit("SET_USER", user);
   },
 };
 

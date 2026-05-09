@@ -6,7 +6,13 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  // Token is now handled automatically via HttpOnly cookies.
+  // In Microsoft Teams iframe context, third-party cookies are blocked by
+  // modern browsers. We store the JWT in localStorage after Teams SSO and
+  // attach it via Authorization header so it reaches the backend.
+  const teamsToken = localStorage.getItem("teams_token");
+  if (teamsToken) {
+    config.headers.Authorization = `Bearer ${teamsToken}`;
+  }
   return config;
 });
 
