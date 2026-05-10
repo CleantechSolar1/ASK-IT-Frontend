@@ -3,7 +3,7 @@
     class="h-20 min-h-[5rem] bg-white/70 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.03)] flex items-center justify-between px-6 sticky top-0 z-40 transition-all duration-300 overflow-hidden"
   >
     <!-- Background Marquee (Subtle) -->
-    <div class="absolute inset-y-0 right-[20px] left-[340px] z-0 pointer-events-none opacity-[0.8] flex items-center">
+    <div class="absolute inset-y-0 right-[230px] left-[370px] z-0 pointer-events-none opacity-[0.8] flex items-center">
       <div class="marquee-container w-full">
         <div class="marquee-content">
           <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
