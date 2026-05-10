@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen relative flex items-center justify-center bg-slate-900 selection:bg-blue-500/20"
+    class="min-h-screen relative flex flex-col items-center justify-center bg-slate-900 selection:bg-blue-500/20"
   >
     <!-- Background Image -->
     <div class="fixed inset-0 z-0 pointer-events-none">
@@ -9,7 +9,32 @@
         alt="Background" 
         class="w-full h-full object-cover opacity-60"
       />
-      <div class="absolute inset-0 bg-slate-950/40"></div>
+      <div class="absolute inset-0 bg-slate-950/20"></div>
+    </div>
+
+    <!-- Background Marquee -->
+    <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 z-[5] pointer-events-none overflow-hidden opacity-60">
+      <div class="marquee-container w-full">
+        <div class="marquee-content">
+          <!-- Set 1 -->
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+          
+          <!-- Set 2 (for seamless loop) -->
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+
+          <!-- Set 3 (extra for full width coverage) -->
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+          <img src="@/assets/target.jpeg" alt="Target" />
+        </div>
+      </div>
     </div>
 
     <!-- Card Wrapper -->
@@ -23,7 +48,7 @@
             <img 
               src="@/assets/cleanteck_logo.png" 
               alt="Cleantech Logo" 
-              class="h-16 w-auto object-contain"
+              class="h-28 w-auto object-contain"
             />
           </div>
 
@@ -195,6 +220,8 @@
             </div>
           </div>
         </div>
+        
+
     </div>
   </div>
 </template>
@@ -259,3 +286,45 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.marquee-content {
+  display: flex;
+  gap: 3rem;
+  padding-left: 3rem; /* Same as gap to keep spacing even */
+  animation: scroll 15s linear infinite;
+  width: max-content;
+}
+
+.marquee-content img {
+  height: 8rem; /* Even larger as requested */
+  width: auto;
+  object-fit: contain;
+  border-radius: 1.5rem;
+  filter: brightness(1.1);
+  transition: all 0.3s ease;
+}
+
+.marquee-content img:hover {
+  filter: grayscale(0%) opacity(100%);
+  transform: scale(1.05);
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+</style>
