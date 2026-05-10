@@ -38,6 +38,138 @@
 
           <!-- Form Elements -->
           <div class="space-y-5">
+            <template v-if="!isProduction">
+              <div>
+                <label
+                  class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1"
+                  >Email address</label
+                >
+                <div class="relative group">
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    v-model="email"
+                    type="email"
+                    placeholder="name@company.com"
+                    class="bg-slate-50/50 border border-slate-200 text-slate-800 placeholder-slate-400 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full pl-11 p-3.5 transition-all outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1"
+                  >Password</label
+                >
+                <div class="relative group">
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    v-model="password"
+                    type="password"
+                    placeholder="••••••••"
+                    class="bg-slate-50/50 border border-slate-200 text-slate-800 placeholder-slate-400 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full pl-11 p-3.5 transition-all outline-none"
+                    @keyup.enter="handleLogin"
+                  />
+                </div>
+              </div>
+
+              <!-- Error message -->
+              <div
+                v-if="errorMessage"
+                class="bg-red-50 border border-red-100 rounded-xl p-3 mt-4 flex items-start gap-2.5 animate-in fade-in slide-in-from-top-1 duration-200 shadow-sm relative overflow-hidden"
+              >
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
+                <svg
+                  class="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <p class="text-red-600 text-sm font-medium leading-tight pt-0.5">
+                  {{ errorMessage }}
+                </p>
+              </div>
+
+              <button
+                :disabled="loading"
+                @click="handleLogin"
+                class="relative w-full overflow-hidden bg-blue-600 text-white font-semibold rounded-xl p-3.5 mt-6 transition-all duration-300 transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed hover:bg-blue-700 hover:shadow-[0_8px_20px_rgba(37,99,235,0.25)] before:absolute before:inset-0 before:bg-white/20 before:translate-x-full hover:before:animate-[shimmer_1s]"
+              >
+                <span class="relative z-10 flex items-center justify-center gap-2">
+                  <svg
+                    v-if="loading"
+                    class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  {{ loading ? "Signing in..." : "Sign In" }}
+                </span>
+              </button>
+
+              <div class="relative mt-4">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-slate-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                  <span class="px-2 bg-white text-slate-500"
+                    >Or continue with</span
+                  >
+                </div>
+              </div>
+            </template>
+
             <!-- Microsoft Login Button -->
             <button
               @click.prevent="loginWithMicrosoft"
@@ -51,6 +183,16 @@
               </svg>
               Sign in with Microsoft
             </button>
+            
+            <div v-if="!isProduction" class="flex items-center justify-center gap-2 mt-6">
+              <span class="text-slate-500 text-sm">Don't have an account?</span>
+              <router-link
+                to="/signup"
+                class="text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors border-b border-transparent hover:border-blue-700"
+              >
+                Sign Up
+              </router-link>
+            </div>
           </div>
         </div>
     </div>
@@ -58,11 +200,58 @@
 </template>
 <script>
 import { mapActions } from "vuex";
+
 export default {
   name: "LoginView",
 
+  data() {
+    return {
+      email: "",
+      password: "",
+      loading: false,
+      errorMessage: "",
+    };
+  },
+
+  computed: {
+    isProduction() {
+      return process.env.NODE_ENV === "production";
+    },
+  },
+
+  mounted() {
+    if (this.$route.query.error) {
+      this.errorMessage = this.$route.query.error;
+    }
+  },
+
   methods: {
-    ...mapActions("auth", ["loginMicrosoft"]),
+    ...mapActions("auth", ["login", "loginMicrosoft"]),
+
+    async handleLogin() {
+      if (!this.email || !this.password) {
+        this.errorMessage = "Email and password are required.";
+        return;
+      }
+
+      this.loading = true;
+      this.errorMessage = "";
+
+      try {
+        await this.login({
+          email: this.email,
+          password: this.password,
+        });
+
+        const role = this.$store.getters["auth/currentUser"]?.role;
+        this.$router.push(role === "Admin" ? "/dashboard" : "/my-tickets");
+      } catch (error) {
+        this.errorMessage =
+          error?.response?.data?.message || "Login failed. Please try again.";
+      } finally {
+        this.loading = false;
+      }
+    },
 
     async loginWithMicrosoft() {
       await this.loginMicrosoft();
