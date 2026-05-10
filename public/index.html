@@ -14,7 +14,66 @@
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="app">
+      <!-- Premium Pre-loader -->
+      <div id="pre-loader" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        font-family: 'Inter', sans-serif;
+      ">
+        <style>
+          @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+          }
+          @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+          }
+          .loader-logo {
+            width: 280px;
+            height: auto;
+            animation: float 3s ease-in-out infinite;
+          }
+          .loader-dots {
+            display: flex;
+            gap: 8px;
+            margin-top: 40px;
+          }
+          .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+          }
+          .dot1 { background: #2563eb; animation-delay: -0.32s; }
+          .dot2 { background: #3b82f6; animation-delay: -0.16s; }
+          .dot3 { background: #10b981; }
+          @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+          }
+        </style>
+        <div style="position: relative;">
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; background: rgba(59, 130, 246, 0.05); border-radius: 50%; filter: blur(60px); animation: pulse 2s infinite;"></div>
+          <img src="<%= BASE_URL %>assets/target.jpeg" alt="Mission 2028" class="loader-logo">
+        </div>
+        <div class="loader-dots">
+          <div class="dot dot1"></div>
+          <div class="dot dot2"></div>
+          <div class="dot dot3"></div>
+        </div>
+      </div>
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>

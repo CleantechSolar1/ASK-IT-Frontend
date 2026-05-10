@@ -21,7 +21,7 @@
     </template>
 
     <template v-else>
-      <div class="z-10 w-full h-full">
+      <div class="z-10 w-full h-full overflow-y-scroll" style="scrollbar-color: initial; scrollbar-width: auto;">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />
