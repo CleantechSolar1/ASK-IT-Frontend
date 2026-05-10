@@ -47,7 +47,7 @@ export default {
 
   computed: {
     isAuthPage() {
-      return ["/login", "/signup"].includes(this.$route.path);
+      return ["/login"].includes(this.$route.path);
     },
   },
 
