@@ -24,6 +24,11 @@ const routes = [
     component: () => import("@/views/AuthCallback.vue"),
   },
   {
+    path: "/teams-login-start",
+    name: "TeamsLoginStart",
+    component: () => import("@/views/TeamsLoginStart.vue"),
+  },
+  {
     path: "/raise-ticket",
     component: () => import("@/views/dashboard/RaiseTicket.vue"),
     meta: { requiresAuth: true },

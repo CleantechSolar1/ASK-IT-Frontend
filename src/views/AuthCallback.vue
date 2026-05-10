@@ -51,8 +51,22 @@ export default {
     this.handleCallback();
   },
   methods: {
-    handleCallback() {
+    async handleCallback() {
       const { token, user, error } = this.$route.query;
+
+      // If opened as a popup, notify MS Teams
+      if (window.opener) {
+        try {
+          const microsoftTeams = require("@microsoft/teams-js");
+          await microsoftTeams.app.initialize();
+          microsoftTeams.authentication.notifySuccess(
+            JSON.stringify({ token, user, error })
+          );
+          return;
+        } catch (e) {
+          console.error("Teams popup notify failed", e);
+        }
+      }
 
       // Handle backend error during OAuth
       if (error) {

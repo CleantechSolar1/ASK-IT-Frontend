@@ -70,11 +70,48 @@ const actions = {
     }
   },
 
-  async loginMicrosoft() {
+  async loginMicrosoft({ commit }) {
     // For OAuth to work correctly, we must redirect the browser directly
     // to the backend endpoint so the user can interact with the Microsoft login page.
     const baseUrl = process.env.VUE_APP_API_URL || "http://localhost:5000/api";
-    window.location.href = `${baseUrl}/auth/microsoft`;
+    const authUrl = `${baseUrl}/auth/microsoft`;
+
+    const { inTeams } = require("@/utils/teams");
+    if (inTeams()) {
+      try {
+        const microsoftTeams = require("@microsoft/teams-js");
+        const startUrl = window.location.origin + "/teams-login-start";
+        const result = await microsoftTeams.authentication.authenticate({
+          url: startUrl,
+          width: 600,
+          height: 535,
+        });
+
+        const data = JSON.parse(result);
+        if (data.error) {
+          const router = require("@/router").default;
+          router.push(`/login?error=${encodeURIComponent(data.error)}`);
+          return;
+        }
+
+        if (data.token) {
+          commit("SET_TOKEN", data.token);
+        }
+        if (data.user) {
+          const userData = JSON.parse(decodeURIComponent(data.user));
+          commit("SET_USER", userData);
+          const router = require("@/router").default;
+          const role = userData?.role?.toLowerCase();
+          router.push(role === "admin" ? "/dashboard" : "/my-tickets");
+        }
+      } catch (error) {
+        console.error("Teams popup auth failed:", error);
+        const router = require("@/router").default;
+        router.push(`/login?error=${encodeURIComponent("Popup authentication failed")}`);
+      }
+    } else {
+      window.location.href = authUrl;
+    }
   },
   
   async loginTeamsSSO({ commit }, token) {
