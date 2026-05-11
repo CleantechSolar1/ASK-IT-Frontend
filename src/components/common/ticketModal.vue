@@ -240,27 +240,98 @@
               Attachments
             </p>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              <div v-for="att in ticket.attachments" :key="att._id" class="relative group aspect-w-16 aspect-h-9 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex flex-col items-center justify-center p-2 shadow-sm">
+              <div
+                v-for="att in ticket.attachments"
+                :key="att._id"
+                class="relative group aspect-w-16 aspect-h-9 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex flex-col items-center justify-center p-2 shadow-sm"
+              >
                 <!-- Image Preview -->
-                <img v-if="att.mimeType && att.mimeType.startsWith('image/')" :src="attachmentUrls[att.driveItemId]" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Attachment Preview" />
-                
+                <img
+                  v-if="att.mimeType && att.mimeType.startsWith('image/')"
+                  :src="attachmentUrls[att.driveItemId]"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  alt="Attachment Preview"
+                />
+
                 <!-- File Icon for Non-Images -->
-                <div v-else class="flex flex-col items-center justify-center p-4">
-                  <svg class="w-8 h-8 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                  <span class="text-xs font-medium text-slate-600 truncate w-full text-center">{{ att.name }}</span>
+                <div
+                  v-else
+                  class="flex flex-col items-center justify-center p-4"
+                >
+                  <svg
+                    class="w-8 h-8 text-slate-400 mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    ></path>
+                  </svg>
+                  <span
+                    class="text-xs font-medium text-slate-600 truncate w-full text-center"
+                    >{{ att.name }}</span
+                  >
                 </div>
-                
-                <div v-if="!attachmentUrls[att.driveItemId] && att.mimeType?.startsWith('image/')" class="absolute inset-0 flex items-center justify-center bg-slate-50">
-                  <svg class="animate-spin h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+
+                <div
+                  v-if="
+                    !attachmentUrls[att.driveItemId] &&
+                    att.mimeType?.startsWith('image/')
+                  "
+                  class="absolute inset-0 flex items-center justify-center bg-slate-50"
+                >
+                  <svg
+                    class="animate-spin h-5 w-5 text-blue-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                 </div>
-                
-                <!-- Overlay to view full image (optional enhancement) -->
-                <a v-if="attachmentUrls[att.driveItemId]" :href="attachmentUrls[att.driveItemId]" target="_blank" class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                </a>
+
+                <!-- Overlay to view full image -->
+                <button
+                  v-if="attachmentUrls[att.driveItemId]"
+                  @click="openPreview(attachmentUrls[att.driveItemId])"
+                  type="button"
+                  class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px] cursor-zoom-in"
+                >
+                  <svg
+                    class="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    ></path>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
@@ -279,6 +350,40 @@
         </button>
       </div>
     </div>
+
+    <!-- Image Preview Overlay -->
+    <div
+      v-if="showPreviewOverlay"
+      class="fixed inset-0 z-[60] bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300"
+      @click="closePreview"
+    >
+      <button
+        @click="closePreview"
+        class="absolute top-6 right-6 p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all"
+      >
+        <svg
+          class="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+
+      <div class="max-w-[90vw] max-h-[90vh] relative" @click.stop>
+        <img
+          :src="previewUrl"
+          class="max-w-full max-h-[90vh] rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+          alt="Full Preview"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -293,6 +398,8 @@ export default {
   data() {
     return {
       attachmentUrls: {},
+      previewUrl: null,
+      showPreviewOverlay: false,
     };
   },
   watch: {
@@ -301,28 +408,45 @@ export default {
         this.loadAttachments();
       } else {
         // Cleanup object URLs when modal closes
-        Object.values(this.attachmentUrls).forEach(url => URL.revokeObjectURL(url));
+        Object.values(this.attachmentUrls).forEach((url) =>
+          URL.revokeObjectURL(url),
+        );
         this.attachmentUrls = {};
       }
-    }
+    },
   },
   mounted() {
-    console.log("Ticket Modal Mounted with ticket:", this.ticket);
+    // console.log("Ticket Modal Mounted with ticket:", this.ticket);
   },
   methods: {
     async loadAttachments() {
       for (const att of this.ticket.attachments) {
-        if (att.mimeType && att.mimeType.startsWith('image/') && !this.attachmentUrls[att.driveItemId]) {
+        if (
+          att.mimeType &&
+          att.mimeType.startsWith("image/") &&
+          !this.attachmentUrls[att.driveItemId]
+        ) {
           try {
             const response = await getAttachmentApi(att.driveItemId);
             const blob = response.data;
             const url = URL.createObjectURL(blob);
-            this.attachmentUrls = { ...this.attachmentUrls, [att.driveItemId]: url };
+            this.attachmentUrls = {
+              ...this.attachmentUrls,
+              [att.driveItemId]: url,
+            };
           } catch (error) {
             console.error("Failed to load attachment:", error);
           }
         }
       }
+    },
+    openPreview(url) {
+      this.previewUrl = url;
+      this.showPreviewOverlay = true;
+    },
+    closePreview() {
+      this.showPreviewOverlay = false;
+      this.previewUrl = null;
     },
     priorityClass(priority) {
       if (priority === "High" || priority === "Critical")
