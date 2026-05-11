@@ -264,7 +264,12 @@
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
               </svg>
             </div>
             <select
@@ -399,7 +404,12 @@
       <button
         @click="submitTicket"
         :disabled="
-          !category || !priority || !description || !department || !country || loading
+          !category ||
+          !priority ||
+          !description ||
+          !department ||
+          !country ||
+          loading
         "
         class="relative w-full sm:w-auto sm:min-w-[200px] overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-2xl px-6 py-4 transition-all duration-300 transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed hover:shadow-[0_12px_24px_rgba(37,99,235,0.25)] hover:-translate-y-0.5 before:absolute before:inset-0 before:bg-white/20 before:translate-x-full hover:before:animate-[shimmer_1s] flex items-center justify-center gap-2"
       >
@@ -491,6 +501,7 @@ export default {
           "Invoice Generation Issues",
           "Login Issues",
           "Access Request",
+          "Others",
         ],
         SharePoint: [
           "Access Request",
@@ -499,15 +510,17 @@ export default {
           "Guest ID Whitelisting",
           "Creating a Site",
           "Login Issues",
+          "Others",
         ],
-        "Business Central": ["Login Issues", "Access Request"],
+        "Business Central": ["Login Issues", "Access Request", "Others"],
         Application: [
           "App Installation",
           "Foxit License Requirement",
           "Outlook Issue",
           "Adobe Not Working",
+          "Others",
         ],
-        VPN: ["ID Creation", "Tunnel Creation"],
+        VPN: ["ID Creation", "Tunnel Creation", "Others"],
         "System Issue": [
           "Device Slow",
           "Laptop Not Powering On",
@@ -517,12 +530,14 @@ export default {
           "USB / HDMI Port Not Working",
           "Audio Not Working",
           "Camera Not Working",
+          "Others",
         ],
         "Power BI": [
           "Dashboard refresh request",
           "License request",
           "New reports creation request",
           "Old report changes request",
+          "Others",
         ],
       };
       return map[this.category] || [];
