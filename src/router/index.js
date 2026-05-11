@@ -13,15 +13,16 @@ const routes = [
     name: "LoginView",
     component: LoginView,
   },
-  {
-    path: "/signup",
-    name: "SignupView",
-    component: () => import("@/views/Signup.vue"),
-  },
+
   {
     path: "/auth/microsoft/callback",
     name: "AuthCallbackView",
     component: () => import("@/views/AuthCallback.vue"),
+  },
+  {
+    path: "/teams-login-start",
+    name: "TeamsLoginStart",
+    component: () => import("@/views/TeamsLoginStart.vue"),
   },
   {
     path: "/raise-ticket",
@@ -62,7 +63,7 @@ router.beforeEach(async (to, from, next) => {
   const user = store.getters["auth/currentUser"];
   const isAdmin = user?.role && String(user.role).toLowerCase() === "admin";
 
-  if ((to.path === "/login" || to.path === "/signup") && isAuthenticated) {
+  if (to.path === "/login" && isAuthenticated) {
     return next(isAdmin ? "/dashboard" : "/my-tickets");
   }
 

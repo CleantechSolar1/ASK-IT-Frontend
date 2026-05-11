@@ -19,3 +19,9 @@ export const updateTicketStatusApi = (ticketId, payload) => {
 export const delegateTicketApi = (ticketId, email) => {
   return api.patch(`/tickets/admin/${ticketId}/delegate`, { email });
 };
+
+export const getAttachmentApi = (driveItemId) => {
+  return api.get(`/tickets/attachment/${driveItemId}`, {
+    responseType: "blob",
+  });
+};

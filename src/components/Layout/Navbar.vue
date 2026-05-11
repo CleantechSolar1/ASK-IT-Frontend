@@ -1,11 +1,26 @@
 <template>
   <header
-    class="h-20 min-h-[5rem] bg-white/70 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.03)] flex items-center justify-between px-6 sticky top-0 z-40 transition-all duration-300"
+    class="h-20 min-h-[5rem] bg-white/70 backdrop-blur-xl border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.03)] flex items-center justify-between px-6 sticky top-0 z-40 transition-all duration-300 overflow-hidden"
   >
+    <!-- Background Marquee (Subtle) -->
+    <div class="absolute inset-y-0 right-[230px] left-[370px] z-0 pointer-events-none opacity-[0.8] flex items-center">
+      <div class="marquee-container w-full">
+        <div class="marquee-content">
+          <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
+          <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
+          <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
+          <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
+          <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
+          <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
+          <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
+          <img src="@/assets/target.jpeg" alt="Target" class="nav-marquee-img" />
+        </div>
+      </div>
+    </div>
     <!-- LOGO -->
     <router-link
       :to="homeRoute"
-      class="flex items-center gap-4 px-3 py-2 -ml-2 rounded-2xl hover:bg-slate-100/40 transition-all duration-300 group"
+      class="relative z-10 flex items-center gap-4 px-3 py-2 -ml-2 rounded-2xl hover:bg-slate-100/40 transition-all duration-300 group"
     >
       <div
         class="flex items-center justify-center w-[180px] h-[64px] bg-white border border-slate-100/80 rounded-2xl px-4 py-2 shadow-[0_8px_20px_rgba(0,0,0,0.06)] group-hover:shadow-[0_12px_28px_rgba(59,130,246,0.12)] group-hover:-translate-y-0.5 transition-all duration-300"
@@ -27,7 +42,7 @@
     </router-link>
 
     <!-- RIGHT -->
-    <div class="flex items-center gap-5">
+    <div class="relative z-10 flex items-center gap-5">
       <div
         class="flex items-center gap-3 py-1.5 px-3 rounded-2xl hover:bg-white border border-transparent hover:border-slate-100 hover:shadow-sm cursor-pointer transition-all duration-300"
       >
@@ -48,21 +63,20 @@
             {{ currentUser.companyName }}
           </span>
         </div>
-        <ChevronDown size="16" class="text-slate-400 ml-1" />
       </div>
     </div>
   </header>
 </template>
 
 <script>
-import { ChevronDown } from "lucide-vue-next";
+// import { ChevronDown } from "lucide-vue-next";
 import { mapGetters } from "vuex";
 
 export default {
   name: "NavbarLayout",
 
   components: {
-    ChevronDown,
+    // ChevronDown,
   },
 
   computed: {
@@ -88,3 +102,34 @@ export default {
   },
 };
 </script>
+<style scoped>
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.marquee-content {
+  display: flex;
+  gap: 2rem;
+  animation: scroll-nav 20s linear infinite;
+  width: max-content;
+}
+
+.nav-marquee-img {
+  height: 3.5rem;
+  width: auto;
+  object-fit: contain;
+  border-radius: 0.5rem;
+}
+
+@keyframes scroll-nav {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+</style>
