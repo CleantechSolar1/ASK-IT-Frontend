@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <!-- Filters -->
-    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+    <div class="flex flex-col lg:flex-row gap-4 mb-6">
       <div class="relative group flex-1">
         <div
           class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
@@ -27,10 +27,10 @@
         />
       </div>
 
-      <div class="flex gap-4 sm:w-auto w-full">
+      <div class="grid grid-cols-2 md:flex md:flex-wrap gap-3 sm:gap-4 w-full lg:w-auto">
         <select
           v-model="statusFilter"
-          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-40 p-2.5 transition-all outline-none shadow-sm font-medium"
+          class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-36 p-2.5 transition-all outline-none shadow-sm font-medium"
         >
           <option value="">All Status</option>
           <option>Received</option>
@@ -41,7 +41,7 @@
 
         <select
           v-model="priorityFilter"
-          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-40 p-2.5 transition-all outline-none shadow-sm font-medium"
+          class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-36 p-2.5 transition-all outline-none shadow-sm font-medium"
         >
           <option value="">All Priorities</option>
           <option>Low</option>
@@ -51,7 +51,7 @@
 
         <select
           v-model="departmentFilter"
-          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-48 p-2.5 transition-all outline-none shadow-sm font-medium"
+          class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-44 p-2.5 transition-all outline-none shadow-sm font-medium col-span-2 md:col-auto"
         >
           <option value="">All Departments</option>
           <option v-for="dept in departments" :key="dept" :value="dept">
@@ -61,7 +61,7 @@
 
         <select
           v-model="assignedToFilter"
-          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-48 p-2.5 transition-all outline-none shadow-sm font-medium"
+          class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-44 p-2.5 transition-all outline-none shadow-sm font-medium col-span-2 md:col-auto"
         >
           <option value="">All Assigned</option>
           <option
@@ -72,12 +72,10 @@
             {{ admin.name || admin.email }}
           </option>
         </select>
-      </div>
-
-      <div class="flex items-center gap-2">
+        
         <button
           @click="showExportOptions"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-semibold rounded-xl shadow-[0_4px_15px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.3)] transition-all duration-300 transform active:scale-95 group"
+          class="col-span-2 md:col-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-[0_4px_15px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.3)] transition-all duration-300 transform active:scale-95 group"
         >
           <svg
             class="w-4 h-4 transition-transform group-hover:scale-110"

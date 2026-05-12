@@ -5,12 +5,29 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-400/10 blur-[120px] pointer-events-none"></div>
 
     <template v-if="!isAuthPage">
-      <Navbar />
+      <Navbar @toggleSidebar="toggleSidebar" />
 
-      <div class="flex flex-1 overflow-hidden z-10">
-        <Sidebar :collapsed="collapsed" @toggleSidebar="toggleSidebar" />
+      <div class="flex flex-1 overflow-hidden z-10 relative">
+        <!-- Sidebar Backdrop for Mobile -->
+        <transition name="fade-backdrop">
+          <div 
+            v-if="isMobile && !collapsed" 
+            class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-20 lg:hidden"
+            @click="toggleSidebar"
+          ></div>
+        </transition>
 
-        <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+        <Sidebar 
+          :collapsed="collapsed" 
+          :isMobile="isMobile"
+          @toggleSidebar="toggleSidebar" 
+          :class="[
+            isMobile ? 'fixed inset-y-0 left-0 z-30' : 'relative',
+            isMobile && collapsed ? '-translate-x-full' : 'translate-x-0'
+          ]"
+        />
+
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
               <component :is="Component" />
@@ -42,6 +59,7 @@ export default {
   data() {
     return {
       collapsed: false,
+      isMobile: false,
     };
   },
 
@@ -51,7 +69,27 @@ export default {
     },
   },
 
+  mounted() {
+    this.checkMobile();
+    window.addEventListener('resize', this.checkMobile);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('resize', this.checkMobile);
+  },
+
   methods: {
+    checkMobile() {
+      const wasMobile = this.isMobile;
+      this.isMobile = window.innerWidth < 1024;
+      
+      // Auto-collapse on mobile, auto-expand on desktop if switching
+      if (this.isMobile && !wasMobile) {
+        this.collapsed = true;
+      } else if (!this.isMobile && wasMobile) {
+        this.collapsed = false;
+      }
+    },
     toggleSidebar() {
       this.collapsed = !this.collapsed;
     },
@@ -75,4 +113,16 @@ export default {
   opacity: 0;
   transform: translateY(-10px);
 }
+
+/* Backdrop Fade Transition */
+.fade-backdrop-enter-active,
+.fade-backdrop-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-backdrop-enter-from,
+.fade-backdrop-leave-to {
+  opacity: 0;
+}
 </style>
+

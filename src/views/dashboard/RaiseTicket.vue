@@ -1,16 +1,16 @@
 <template>
-  <div class="max-w-5xl mx-auto py-8 px-4">
-    <div class="mb-8">
-      <h2 class="text-3xl font-bold tracking-tight text-slate-800">
+  <div class="max-w-5xl mx-auto py-6 sm:py-8 px-4">
+    <div class="mb-6 sm:mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">
         Raise Ticket
       </h2>
-      <p class="text-slate-500 mt-1">
+      <p class="text-sm sm:text-base text-slate-500 mt-1">
         Submit a new support request and we'll help you resolve it.
       </p>
     </div>
 
     <div
-      class="bg-white p-8 sm:p-10 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-slate-100 relative overflow-hidden transition-all duration-300"
+      class="bg-white p-5 sm:p-8 md:p-10 rounded-3xl sm:rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-slate-100 relative overflow-hidden transition-all duration-300"
     >
       <!-- Decorative background accent -->
       <div

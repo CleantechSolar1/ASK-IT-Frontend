@@ -1,13 +1,12 @@
 <template>
-  <div class="max-w-7xl mx-auto">
-    <div class="flex items-center justify-between mb-8">
+  <div class="max-w-7xl mx-auto py-6 sm:py-8 px-4 sm:px-0">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
       <div>
-        <h2 class="text-3xl font-bold tracking-tight text-slate-800">My Tickets</h2>
-        <p class="text-slate-500 mt-1">Manage and track your submitted support requests.</p>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">My Tickets</h2>
+        <p class="text-sm sm:text-base text-slate-500 mt-1">Manage and track your submitted support requests.</p>
       </div>
       
-      <!-- Optional: Add New Ticket Button on the right -->
-      <router-link to="/raise-ticket" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm shadow-blue-600/20 active:scale-95">
+      <router-link to="/raise-ticket" class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm shadow-blue-600/20 active:scale-95 w-full sm:w-auto">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
         New Ticket
       </router-link>

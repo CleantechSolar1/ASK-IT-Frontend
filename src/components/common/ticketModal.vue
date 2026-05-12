@@ -1,19 +1,19 @@
 <template>
   <div
     v-if="show"
-    class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all"
+    class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4 transition-all"
   >
     <div
-      class="bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]"
+      class="bg-white rounded-3xl sm:rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]"
     >
       <!-- Header -->
       <div
-        class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"
+        class="px-5 sm:px-8 py-4 sm:py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"
       >
-        <div class="flex items-center gap-3">
-          <div class="p-2 bg-blue-100 text-blue-600 rounded-xl">
+        <div class="flex items-center gap-2 sm:gap-3">
+          <div class="p-1.5 sm:p-2 bg-blue-100 text-blue-600 rounded-lg sm:rounded-xl">
             <svg
-              class="w-5 h-5"
+              class="w-4 h-4 sm:w-5 sm:h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -32,7 +32,7 @@
               ></path>
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-slate-800">Ticket Details</h3>
+          <h3 class="text-lg sm:text-xl font-bold text-slate-800">Ticket Details</h3>
         </div>
         <button
           @click="$emit('close')"
@@ -55,11 +55,11 @@
       </div>
 
       <!-- Body -->
-      <div class="p-8 overflow-y-auto">
-        <div class="space-y-6">
+      <div class="p-5 sm:p-8 overflow-y-auto">
+        <div class="space-y-5 sm:space-y-6">
           <!-- ID & Date Row -->
           <div
-            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100"
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-slate-100"
           >
             <div>
               <p

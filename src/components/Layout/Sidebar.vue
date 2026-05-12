@@ -1,81 +1,81 @@
 <template>
   <aside
     :class="[
-      'relative bg-white/60 backdrop-blur-xl border-r border-slate-200/50 flex flex-col transition-all duration-300 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30',
-      collapsed ? 'w-20' : 'w-72',
+      'bg-white/95 backdrop-blur-xl border-r border-slate-200/50 flex flex-col transition-all duration-300 shadow-xl z-30',
+      collapsed ? 'w-0 lg:w-20 overflow-hidden' : 'w-72',
+      isMobile ? 'h-full pt-20' : 'relative h-full'
     ]"
   >
-    <!-- COLLAPSE BUTTON -->
+    <!-- COLLAPSE BUTTON - Only on Desktop -->
     <button
+      v-if="!isMobile"
       @click="$emit('toggleSidebar')"
-      class="absolute right-[-14px] top-8 w-7 h-7 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:shadow-md hover:bg-slate-50 transition-all duration-300 z-50"
-      :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      class="absolute right-[-14px] top-8 w-7 h-7 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:shadow-md transition-all duration-300 z-50"
     >
-      <ChevronLeft v-if="!collapsed" size="16" class="ml-0.5" />
-      <ChevronRight v-else size="16" class="ml-0.5" />
+      <ChevronLeft v-if="!collapsed" size="16" />
+      <ChevronRight v-else size="16" />
     </button>
 
     <!-- MENU -->
-    <nav class="flex-1 pt-6 px-4 space-y-2.5 overflow-y-auto">
+    <nav class="flex-1 px-4 space-y-2 overflow-y-auto pt-4">
       <router-link
         v-if="isAdmin"
         to="/dashboard"
-        class="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all duration-300 group [&.router-link-active]:bg-gradient-to-r [&.router-link-active]:from-blue-50/80 [&.router-link-active]:to-indigo-50/80 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold [&.router-link-active]:shadow-[inset_4px_0_0_rgba(37,99,235,1)]"
+        @click="handleNavClick"
+        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all group [&.router-link-active]:bg-blue-50 [&.router-link-active]:text-blue-700"
       >
-        <Home size="20" class="group-hover:scale-110 group-[.router-link-active]:text-blue-600 transition-all duration-300" />
-        <span v-if="!collapsed" class="text-sm"> Dashboard </span>
+        <Home size="20" class="shrink-0" />
+        <span v-if="!collapsed || isMobile" class="text-sm"> Dashboard </span>
       </router-link>
 
       <router-link
         v-if="isAdmin"
         to="/manage-admins"
-        class="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all duration-300 group [&.router-link-active]:bg-gradient-to-r [&.router-link-active]:from-blue-50/80 [&.router-link-active]:to-indigo-50/80 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold [&.router-link-active]:shadow-[inset_4px_0_0_rgba(37,99,235,1)]"
+        @click="handleNavClick"
+        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all group [&.router-link-active]:bg-blue-50 [&.router-link-active]:text-blue-700"
       >
-        <Users size="20" class="group-hover:scale-110 group-[.router-link-active]:text-blue-600 transition-all duration-300" />
-        <span v-if="!collapsed" class="text-sm"> Manage Admins </span>
+        <Users size="20" class="shrink-0" />
+        <span v-if="!collapsed || isMobile" class="text-sm"> Manage Admins </span>
       </router-link>
 
       <router-link 
         to="/raise-ticket" 
-        class="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all duration-300 group [&.router-link-active]:bg-gradient-to-r [&.router-link-active]:from-blue-50/80 [&.router-link-active]:to-indigo-50/80 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold [&.router-link-active]:shadow-[inset_4px_0_0_rgba(37,99,235,1)]"
+        @click="handleNavClick"
+        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all group [&.router-link-active]:bg-blue-50 [&.router-link-active]:text-blue-700"
       >
-        <Ticket size="20" class="group-hover:scale-110 group-[.router-link-active]:text-blue-600 transition-all duration-300" />
-        <span v-if="!collapsed" class="text-sm"> Raise Ticket </span>
+        <Ticket size="20" class="shrink-0" />
+        <span v-if="!collapsed || isMobile" class="text-sm"> Raise Ticket </span>
       </router-link>
 
       <router-link 
         to="/my-tickets" 
-        class="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all duration-300 group [&.router-link-active]:bg-gradient-to-r [&.router-link-active]:from-blue-50/80 [&.router-link-active]:to-indigo-50/80 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold [&.router-link-active]:shadow-[inset_4px_0_0_rgba(37,99,235,1)]"
+        @click="handleNavClick"
+        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all group [&.router-link-active]:bg-blue-50 [&.router-link-active]:text-blue-700"
       >
-        <FileText size="20" class="group-hover:scale-110 group-[.router-link-active]:text-blue-600 transition-all duration-300" />
-        <span v-if="!collapsed" class="text-sm"> My Tickets </span>
+        <FileText size="20" class="shrink-0" />
+        <span v-if="!collapsed || isMobile" class="text-sm"> My Tickets </span>
       </router-link>
     </nav>
 
     <!-- BOTTOM SECTION -->
-    <div class="p-5 mt-auto border-t border-slate-200/50">
-      <!-- USER CARD -->
+    <div class="p-4 mt-auto border-t border-slate-100">
       <div
-        v-if="!collapsed"
-        class="mb-4 p-4 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200 shadow-sm"
+        v-if="!collapsed || isMobile"
+        class="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-100"
       >
-        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1.5">Your Role</div>
-        <div class="font-bold text-slate-800 text-sm flex items-center gap-2.5">
-          <div class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </div>
+        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Your Role</div>
+        <div class="font-bold text-slate-800 text-sm flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
           {{ userRole }}
         </div>
       </div>
 
-      <!-- LOGOUT -->
       <button
-        class="w-full flex items-center justify-center gap-2.5 bg-white border border-red-200 text-red-500 hover:bg-red-50 hover:text-red-600 hover:border-red-300 py-3 rounded-2xl transition-all duration-300 font-semibold text-sm group"
+        class="w-full flex items-center justify-center gap-2 text-red-500 hover:bg-red-50 py-2.5 rounded-xl transition-all font-semibold text-sm border border-red-100"
         @click="handleLogout"
       >
-        <LogOut size="18" class="group-hover:-translate-x-1 transition-transform" />
-        <span v-if="!collapsed"> Logout </span>
+        <LogOut size="18" class="shrink-0" />
+        <span v-if="!collapsed || isMobile"> Logout </span>
       </button>
     </div>
   </aside>
@@ -96,7 +96,10 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "SidebarLayout",
 
-  props: ["collapsed"],
+  props: {
+    collapsed: Boolean,
+    isMobile: Boolean
+  },
 
   emits: ["toggleSidebar"],
 
@@ -127,6 +130,12 @@ export default {
   methods: {
     ...mapActions("auth", ["logout"]),
 
+    handleNavClick() {
+      if (this.isMobile) {
+        this.$emit('toggleSidebar');
+      }
+    },
+
     async handleLogout() {
       try {
         await this.logout();
@@ -138,3 +147,5 @@ export default {
   },
 };
 </script>
+
+
