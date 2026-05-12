@@ -27,7 +27,9 @@
         />
       </div>
 
-      <div class="grid grid-cols-2 md:flex md:flex-wrap gap-3 sm:gap-4 w-full lg:w-auto">
+      <div
+        class="grid grid-cols-2 md:flex md:flex-wrap gap-3 sm:gap-4 w-full lg:w-auto"
+      >
         <select
           v-model="statusFilter"
           class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-36 p-2.5 transition-all outline-none shadow-sm font-medium"
@@ -72,7 +74,7 @@
             {{ admin.name || admin.email }}
           </option>
         </select>
-        
+
         <button
           @click="showExportOptions"
           class="col-span-2 md:col-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-[0_4px_15px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.3)] transition-all duration-300 transform active:scale-95 group"
@@ -368,6 +370,7 @@ export default {
         "RISK MANAGEMENT",
         "HR and Administration",
         "Wind",
+        "Business Development",
       ],
     };
   },

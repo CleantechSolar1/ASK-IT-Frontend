@@ -379,28 +379,78 @@
         <label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">
           Attachments (Optional)
         </label>
-        <div class="mt-2 flex justify-center rounded-xl border border-dashed border-slate-300 px-6 py-6 hover:bg-slate-50 transition-colors">
+        <div
+          class="mt-2 flex justify-center rounded-xl border border-dashed border-slate-300 px-6 py-6 hover:bg-slate-50 transition-colors"
+        >
           <div class="text-center">
-            <svg class="mx-auto h-10 w-10 text-slate-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+            <svg
+              class="mx-auto h-10 w-10 text-slate-300"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
+                clip-rule="evenodd"
+              />
             </svg>
-            <div class="mt-4 flex text-sm leading-6 text-slate-600 justify-center">
-              <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500">
+            <div
+              class="mt-4 flex text-sm leading-6 text-slate-600 justify-center"
+            >
+              <label
+                for="file-upload"
+                class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
+              >
                 <span>Upload a file</span>
-                <input id="file-upload" name="file-upload" type="file" multiple accept="image/*" class="sr-only" @change="handleFileChange">
+                <input
+                  id="file-upload"
+                  name="file-upload"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  class="sr-only"
+                  @change="handleFileChange"
+                />
               </label>
               <p class="pl-1">or drag and drop</p>
             </div>
-            <p class="text-xs leading-5 text-slate-500">PNG, JPG, GIF up to 5MB</p>
+            <p class="text-xs leading-5 text-slate-500">
+              PNG, JPG, GIF up to 5MB
+            </p>
           </div>
         </div>
 
-        <div v-if="attachments.length > 0" class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          <div v-for="(file, index) in attachments" :key="index" class="relative group aspect-w-10 aspect-h-7 rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center p-2 border border-slate-200">
-            <span class="text-xs font-medium text-slate-600 truncate px-2 text-center">{{ file.name }}</span>
-            <button @click="removeAttachment(index)" type="button" class="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <div
+          v-if="attachments.length > 0"
+          class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
+        >
+          <div
+            v-for="(file, index) in attachments"
+            :key="index"
+            class="relative group aspect-w-10 aspect-h-7 rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center p-2 border border-slate-200"
+          >
+            <span
+              class="text-xs font-medium text-slate-600 truncate px-2 text-center"
+              >{{ file.name }}</span
+            >
+            <button
+              @click="removeAttachment(index)"
+              type="button"
+              class="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <svg
+                class="w-3 h-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -513,6 +563,7 @@ export default {
         "RISK MANAGEMENT",
         "HR and Administration",
         "Wind",
+        "Business Development",
       ],
     };
   },
@@ -625,7 +676,7 @@ export default {
       }
 
       await this.createTicket(formData);
-      
+
       this.loading = false;
       this.successMessage = "Ticket created successfully";
 
