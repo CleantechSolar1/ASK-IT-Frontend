@@ -15,7 +15,8 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <!-- Total Tickets -->
       <div
-        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(59,130,246,0.1)] hover:-translate-y-1 transition-all duration-300"
+        @click="setFilterAndScroll('')"
+        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(59,130,246,0.1)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
       >
         <div
           class="absolute right-[-10%] top-[-10%] w-32 h-32 bg-blue-400/20 rounded-full blur-2xl group-hover:bg-blue-400/30 transition-colors duration-300 pointer-events-none"
@@ -49,11 +50,30 @@
             </svg>
           </div>
         </div>
+        <div
+          class="flex items-center text-blue-600 text-xs font-bold gap-1 group-hover:gap-2 transition-all"
+        >
+          <span>View all tickets</span>
+          <svg
+            class="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            ></path>
+          </svg>
+        </div>
       </div>
 
       <!-- Open Tickets -->
       <div
-        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(245,158,11,0.1)] hover:-translate-y-1 transition-all duration-300"
+        @click="setFilterAndScroll('Open')"
+        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(245,158,11,0.1)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
       >
         <div
           class="absolute right-[-10%] top-[-10%] w-32 h-32 bg-amber-400/20 rounded-full blur-2xl group-hover:bg-amber-400/30 transition-colors duration-300 pointer-events-none"
@@ -87,11 +107,30 @@
             </svg>
           </div>
         </div>
+        <div
+          class="flex items-center text-amber-600 text-xs font-bold gap-1 group-hover:gap-2 transition-all"
+        >
+          <span>Filter by open</span>
+          <svg
+            class="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            ></path>
+          </svg>
+        </div>
       </div>
 
       <!-- Pending Requests -->
       <div
-        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(148,163,184,0.1)] hover:-translate-y-1 transition-all duration-300"
+        @click="setFilterAndScroll('Pending')"
+        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(148,163,184,0.1)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
       >
         <div
           class="absolute right-[-10%] top-[-10%] w-32 h-32 bg-slate-400/20 rounded-full blur-2xl group-hover:bg-slate-400/30 transition-colors duration-300 pointer-events-none"
@@ -125,11 +164,30 @@
             </svg>
           </div>
         </div>
+        <div
+          class="flex items-center text-slate-600 text-xs font-bold gap-1 group-hover:gap-2 transition-all"
+        >
+          <span>Filter by pending</span>
+          <svg
+            class="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            ></path>
+          </svg>
+        </div>
       </div>
 
       <!-- Completed Tickets -->
       <div
-        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.1)] hover:-translate-y-1 transition-all duration-300"
+        @click="setFilterAndScroll('Completed')"
+        class="group relative overflow-hidden bg-white p-7 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.1)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
       >
         <div
           class="absolute right-[-10%] top-[-10%] w-32 h-32 bg-emerald-400/20 rounded-full blur-2xl group-hover:bg-emerald-400/30 transition-colors duration-300 pointer-events-none"
@@ -163,11 +221,30 @@
             </svg>
           </div>
         </div>
+        <div
+          class="flex items-center text-emerald-600 text-xs font-bold gap-1 group-hover:gap-2 transition-all"
+        >
+          <span>Filter by completed</span>
+          <svg
+            class="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            ></path>
+          </svg>
+        </div>
       </div>
     </div>
 
     <!-- Recent Tickets Section -->
     <div
+      id="tickets-table"
       class="bg-white rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden"
     >
       <div
@@ -179,8 +256,8 @@
       </div>
 
       <!-- Recent Tickets Table Component -->
-      <div class="p-6">
-        <AdminTickets :tickets="tickets" />
+      <div id="tickets-section" class="p-6 scroll-mt-24">
+        <AdminTickets :tickets="tickets" :initialStatus="activeFilter" />
       </div>
     </div>
   </div>
@@ -195,6 +272,12 @@ export default {
 
   components: {
     AdminTickets,
+  },
+
+  data() {
+    return {
+      activeFilter: "",
+    };
   },
 
   computed: {
@@ -213,6 +296,17 @@ export default {
 
   methods: {
     ...mapActions("ticket", ["fetchAdminTickets"]),
+
+    setFilterAndScroll(status) {
+      this.activeFilter = status;
+      const navbarHeight = 80; // adjust if navbar height changes
+      const element = document.getElementById("tickets-section");
+      if (element) {
+        const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetTop = elementTop - navbarHeight - 16; // extra spacing
+        window.scrollTo({ top: offsetTop, behavior: "smooth" });
+      }
+    },
   },
 };
 </script>

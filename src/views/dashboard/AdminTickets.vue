@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <!-- Filters -->
-    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+    <div class="flex flex-col lg:flex-row gap-4 mb-6">
       <div class="relative group flex-1">
         <div
           class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
@@ -27,12 +27,15 @@
         />
       </div>
 
-      <div class="flex gap-4 sm:w-auto w-full">
+      <div
+        class="grid grid-cols-2 md:flex md:flex-wrap gap-3 sm:gap-4 w-full lg:w-auto"
+      >
         <select
           v-model="statusFilter"
-          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-40 p-2.5 transition-all outline-none shadow-sm font-medium"
+          class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-36 p-2.5 transition-all outline-none shadow-sm font-medium"
         >
           <option value="">All Status</option>
+          <option value="Open">Open Tickets</option>
           <option>Received</option>
           <option>In Progress</option>
           <option>Pending</option>
@@ -41,7 +44,7 @@
 
         <select
           v-model="priorityFilter"
-          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-40 p-2.5 transition-all outline-none shadow-sm font-medium"
+          class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-36 p-2.5 transition-all outline-none shadow-sm font-medium"
         >
           <option value="">All Priorities</option>
           <option>Low</option>
@@ -51,7 +54,7 @@
 
         <select
           v-model="departmentFilter"
-          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-48 p-2.5 transition-all outline-none shadow-sm font-medium"
+          class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-44 p-2.5 transition-all outline-none shadow-sm font-medium col-span-2 md:col-auto"
         >
           <option value="">All Departments</option>
           <option v-for="dept in departments" :key="dept" :value="dept">
@@ -61,7 +64,7 @@
 
         <select
           v-model="assignedToFilter"
-          class="bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full sm:w-48 p-2.5 transition-all outline-none shadow-sm font-medium"
+          class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-44 p-2.5 transition-all outline-none shadow-sm font-medium col-span-2 md:col-auto"
         >
           <option value="">All Assigned</option>
           <option
@@ -72,12 +75,10 @@
             {{ admin.name || admin.email }}
           </option>
         </select>
-      </div>
 
-      <div class="flex items-center gap-2">
         <button
           @click="showExportOptions"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-semibold rounded-xl shadow-[0_4px_15px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.3)] transition-all duration-300 transform active:scale-95 group"
+          class="col-span-2 md:col-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-[0_4px_15px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.3)] transition-all duration-300 transform active:scale-95 group"
         >
           <svg
             class="w-4 h-4 transition-transform group-hover:scale-110"
@@ -293,30 +294,30 @@
     <div
       class="flex items-center justify-between bg-white px-4 py-3 sm:px-6 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100"
     >
-      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+      <div class="flex-1 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <p class="text-sm text-slate-700">
-            Showing page
-            <span class="font-semibold text-slate-900">{{ page }}</span> of
-            <span class="font-semibold text-slate-900">{{ totalPages }}</span>
+          <p class="text-sm text-slate-700 font-medium">
+            Page
+            <span class="font-bold text-slate-900">{{ page }}</span> of
+            <span class="font-bold text-slate-900">{{ totalPages }}</span>
           </p>
         </div>
         <div>
           <nav
-            class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+            class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px gap-2"
             aria-label="Pagination"
           >
             <button
               @click="prevPage"
               :disabled="page === 1"
-              class="relative inline-flex items-center px-4 py-2 rounded-l-xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="relative inline-flex items-center px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-50 focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 shadow-sm"
             >
               Previous
             </button>
             <button
               @click="nextPage"
               :disabled="page >= totalPages"
-              class="relative inline-flex items-center px-4 py-2 rounded-r-xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="relative inline-flex items-center px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-50 focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 shadow-sm"
             >
               Next
             </button>
@@ -340,7 +341,13 @@ import Swal from "sweetalert2";
 import ticketModal from "@/components/common/ticketModal.vue";
 
 export default {
-  props: ["tickets"],
+  props: {
+    tickets: Array,
+    initialStatus: {
+      type: String,
+      default: "",
+    },
+  },
 
   components: {
     ticketModal,
@@ -349,7 +356,7 @@ export default {
   data() {
     return {
       search: "",
-      statusFilter: "",
+      statusFilter: this.initialStatus,
       priorityFilter: "",
       departmentFilter: "",
       assignedToFilter: "",
@@ -370,6 +377,7 @@ export default {
         "RISK MANAGEMENT",
         "HR and Administration",
         "Wind",
+        "Business Development",
       ],
     };
   },
@@ -403,7 +411,10 @@ export default {
           (ticket.userId?.name || "").toLowerCase().includes(searchTerm);
 
         const matchStatus =
-          !this.statusFilter || ticket.status === this.statusFilter;
+          !this.statusFilter ||
+          (this.statusFilter === "Open"
+            ? ticket.status !== "Completed"
+            : ticket.status === this.statusFilter);
 
         const matchPriority =
           !this.priorityFilter || ticket.priority === this.priorityFilter;
@@ -432,6 +443,13 @@ export default {
     paginatedTickets() {
       const start = (this.page - 1) * this.perPage;
       return this.filteredTickets.slice(start, start + this.perPage);
+    },
+  },
+
+  watch: {
+    initialStatus(newVal) {
+      this.statusFilter = newVal;
+      this.page = 1; // Reset to first page when filter changes
     },
   },
 

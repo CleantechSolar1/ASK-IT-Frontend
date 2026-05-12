@@ -1,81 +1,108 @@
 <template>
   <aside
     :class="[
-      'relative bg-white/60 backdrop-blur-xl border-r border-slate-200/50 flex flex-col transition-all duration-300 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30',
-      collapsed ? 'w-20' : 'w-72',
+      'bg-white transition-all duration-300 flex flex-col shadow-2xl z-50',
+      collapsed ? 'w-0 lg:w-20' : 'w-72',
+      isMobile ? 'fixed inset-y-0 left-0 pt-0 overflow-hidden' : 'h-full relative border-r border-slate-200',
     ]"
   >
-    <!-- COLLAPSE BUTTON -->
+    <!-- Collapse Button (Desktop Only) -->
     <button
+      v-if="!isMobile"
       @click="$emit('toggleSidebar')"
-      class="absolute right-[-14px] top-8 w-7 h-7 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:shadow-md hover:bg-slate-50 transition-all duration-300 z-50"
-      :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      class="absolute right-[-14px] top-10 w-7 h-7 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-400 hover:text-blue-600 hover:border-blue-300 transition-all z-[60]"
     >
-      <ChevronLeft v-if="!collapsed" size="16" class="ml-0.5" />
-      <ChevronRight v-else size="16" class="ml-0.5" />
+      <ChevronLeft v-if="!collapsed" size="16" />
+      <ChevronRight v-else size="16" />
     </button>
+    <!-- Logo area for Mobile Drawer -->
+    <div
+      v-if="isMobile"
+      class="h-20 flex items-center px-6 border-b border-slate-100 shrink-0"
+    >
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center p-1"
+        >
+          <img
+            src="@/assets/cleanteck_logo.png"
+            alt="Logo"
+            class="w-full h-full object-contain"
+          />
+        </div>
+        <span class="font-bold text-slate-800 tracking-tight">Ask IT</span>
+      </div>
+    </div>
 
-    <!-- MENU -->
-    <nav class="flex-1 pt-6 px-4 space-y-2.5 overflow-y-auto">
+    <!-- Navigation Links -->
+    <nav 
+      class="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto custom-scrollbar"
+      :class="collapsed && !isMobile ? 'overflow-hidden' : ''"
+    >
       <router-link
-        v-if="isAdmin"
-        to="/dashboard"
-        class="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all duration-300 group [&.router-link-active]:bg-gradient-to-r [&.router-link-active]:from-blue-50/80 [&.router-link-active]:to-indigo-50/80 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold [&.router-link-active]:shadow-[inset_4px_0_0_rgba(37,99,235,1)]"
+        v-for="item in menuItems"
+        :key="item.path"
+        :to="item.path"
+        @click="handleNavClick"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative"
+        :class="[
+          $route.path === item.path
+            ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20'
+            : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800',
+        ]"
       >
-        <Home size="20" class="group-hover:scale-110 group-[.router-link-active]:text-blue-600 transition-all duration-300" />
-        <span v-if="!collapsed" class="text-sm"> Dashboard </span>
-      </router-link>
+        <component
+          :is="item.icon"
+          :size="20"
+          :stroke-width="2.5"
+          class="shrink-0 transition-transform group-hover:scale-110"
+        />
+        <span
+          v-if="!collapsed || isMobile"
+          class="font-bold text-sm tracking-tight"
+        >
+          {{ item.name }}
+        </span>
 
-      <router-link
-        v-if="isAdmin"
-        to="/manage-admins"
-        class="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all duration-300 group [&.router-link-active]:bg-gradient-to-r [&.router-link-active]:from-blue-50/80 [&.router-link-active]:to-indigo-50/80 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold [&.router-link-active]:shadow-[inset_4px_0_0_rgba(37,99,235,1)]"
-      >
-        <Users size="20" class="group-hover:scale-110 group-[.router-link-active]:text-blue-600 transition-all duration-300" />
-        <span v-if="!collapsed" class="text-sm"> Manage Admins </span>
-      </router-link>
-
-      <router-link 
-        to="/raise-ticket" 
-        class="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all duration-300 group [&.router-link-active]:bg-gradient-to-r [&.router-link-active]:from-blue-50/80 [&.router-link-active]:to-indigo-50/80 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold [&.router-link-active]:shadow-[inset_4px_0_0_rgba(37,99,235,1)]"
-      >
-        <Ticket size="20" class="group-hover:scale-110 group-[.router-link-active]:text-blue-600 transition-all duration-300" />
-        <span v-if="!collapsed" class="text-sm"> Raise Ticket </span>
-      </router-link>
-
-      <router-link 
-        to="/my-tickets" 
-        class="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900 transition-all duration-300 group [&.router-link-active]:bg-gradient-to-r [&.router-link-active]:from-blue-50/80 [&.router-link-active]:to-indigo-50/80 [&.router-link-active]:text-blue-700 [&.router-link-active]:font-semibold [&.router-link-active]:shadow-[inset_4px_0_0_rgba(37,99,235,1)]"
-      >
-        <FileText size="20" class="group-hover:scale-110 group-[.router-link-active]:text-blue-600 transition-all duration-300" />
-        <span v-if="!collapsed" class="text-sm"> My Tickets </span>
+        <!-- Tooltip for collapsed mode -->
+        <div
+          v-if="collapsed && !isMobile"
+          class="absolute left-full ml-4 px-3 py-1.5 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-[100]"
+        >
+          {{ item.name }}
+        </div>
       </router-link>
     </nav>
 
-    <!-- BOTTOM SECTION -->
-    <div class="p-5 mt-auto border-t border-slate-200/50">
-      <!-- USER CARD -->
-      <div
-        v-if="!collapsed"
-        class="mb-4 p-4 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200 shadow-sm"
-      >
-        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1.5">Your Role</div>
-        <div class="font-bold text-slate-800 text-sm flex items-center gap-2.5">
-          <div class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </div>
-          {{ userRole }}
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+      <div v-if="!collapsed || isMobile" class="mb-4 px-2">
+        <p
+          class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 opacity-70"
+        >
+          Your Role
+        </p>
+        <div
+          class="flex items-center gap-2 px-3 py-2 bg-white rounded-xl border border-slate-200 shadow-sm"
+        >
+          <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span
+            class="text-xs font-bold text-slate-700 uppercase tracking-wide"
+            >{{ userRole }}</span
+          >
         </div>
       </div>
 
-      <!-- LOGOUT -->
       <button
-        class="w-full flex items-center justify-center gap-2.5 bg-white border border-red-200 text-red-500 hover:bg-red-50 hover:text-red-600 hover:border-red-300 py-3 rounded-2xl transition-all duration-300 font-semibold text-sm group"
         @click="handleLogout"
+        class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all duration-200 group font-bold text-sm"
       >
-        <LogOut size="18" class="group-hover:-translate-x-1 transition-transform" />
-        <span v-if="!collapsed"> Logout </span>
+        <LogOut
+          :size="20"
+          :stroke-width="2.5"
+          class="shrink-0 transition-transform group-hover:-translate-x-1"
+        />
+        <span v-if="!collapsed || isMobile"> Logout </span>
       </button>
     </div>
   </aside>
@@ -83,58 +110,93 @@
 
 <script>
 import {
-  Home,
+  LayoutDashboard,
   Ticket,
-  FileText,
-  LogOut,
+  PlusCircle,
   Users,
+  LogOut,
   ChevronLeft,
   ChevronRight,
 } from "lucide-vue-next";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "SidebarLayout",
 
-  props: ["collapsed"],
+  components: {
+    LogOut,
+    ChevronLeft,
+    ChevronRight,
+  },
 
-  emits: ["toggleSidebar"],
+  props: {
+    collapsed: Boolean,
+    isMobile: Boolean,
+  },
 
   computed: {
     ...mapGetters("auth", ["currentUser"]),
 
-    isAdmin() {
-      const role = this.currentUser?.role;
-      return role ? String(role).toLowerCase() === "admin" : false;
-    },
-
     userRole() {
-      const role = this.currentUser?.role;
-      return role ? String(role).charAt(0).toUpperCase() + String(role).slice(1).toLowerCase() : "User";
+      return this.currentUser?.role || "User";
     },
-  },
 
-  components: {
-    Home,
-    Ticket,
-    FileText,
-    LogOut,
-    Users,
-    ChevronLeft,
-    ChevronRight,
+    isAdmin() {
+      return this.userRole.toLowerCase() === "admin";
+    },
+
+    menuItems() {
+      const items = [];
+      if (this.isAdmin) {
+        items.push({
+          name: "Dashboard",
+          path: "/dashboard",
+          icon: LayoutDashboard,
+        });
+        items.push({
+          name: "Manage Admins",
+          path: "/manage-admins",
+          icon: Users,
+        });
+      }
+
+      items.push({
+        name: "Raise Ticket",
+        path: "/raise-ticket",
+        icon: PlusCircle,
+      });
+      items.push({ name: "My Tickets", path: "/my-tickets", icon: Ticket });
+
+      return items;
+    },
   },
 
   methods: {
     ...mapActions("auth", ["logout"]),
 
     async handleLogout() {
-      try {
-        await this.logout();
-        window.location.href = "/login";
-      } catch (error) {
-        console.log(error);
+      await this.logout();
+      window.location.href = "/login";
+    },
+
+    handleNavClick() {
+      if (this.isMobile) {
+        this.$emit("toggleSidebar");
       }
     },
   },
 };
 </script>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+</style>
