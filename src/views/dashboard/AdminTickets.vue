@@ -35,6 +35,7 @@
           class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 block w-full md:w-36 p-2.5 transition-all outline-none shadow-sm font-medium"
         >
           <option value="">All Status</option>
+          <option value="Open">Open Tickets</option>
           <option>Received</option>
           <option>In Progress</option>
           <option>Pending</option>
@@ -293,30 +294,30 @@
     <div
       class="flex items-center justify-between bg-white px-4 py-3 sm:px-6 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100"
     >
-      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+      <div class="flex-1 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <p class="text-sm text-slate-700">
-            Showing page
-            <span class="font-semibold text-slate-900">{{ page }}</span> of
-            <span class="font-semibold text-slate-900">{{ totalPages }}</span>
+          <p class="text-sm text-slate-700 font-medium">
+            Page
+            <span class="font-bold text-slate-900">{{ page }}</span> of
+            <span class="font-bold text-slate-900">{{ totalPages }}</span>
           </p>
         </div>
         <div>
           <nav
-            class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+            class="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px gap-2"
             aria-label="Pagination"
           >
             <button
               @click="prevPage"
               :disabled="page === 1"
-              class="relative inline-flex items-center px-4 py-2 rounded-l-xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="relative inline-flex items-center px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-50 focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 shadow-sm"
             >
               Previous
             </button>
             <button
               @click="nextPage"
               :disabled="page >= totalPages"
-              class="relative inline-flex items-center px-4 py-2 rounded-r-xl border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="relative inline-flex items-center px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-50 focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 shadow-sm"
             >
               Next
             </button>
@@ -340,7 +341,13 @@ import Swal from "sweetalert2";
 import ticketModal from "@/components/common/ticketModal.vue";
 
 export default {
-  props: ["tickets"],
+  props: {
+    tickets: Array,
+    initialStatus: {
+      type: String,
+      default: "",
+    },
+  },
 
   components: {
     ticketModal,
@@ -349,7 +356,7 @@ export default {
   data() {
     return {
       search: "",
-      statusFilter: "",
+      statusFilter: this.initialStatus,
       priorityFilter: "",
       departmentFilter: "",
       assignedToFilter: "",
@@ -404,7 +411,10 @@ export default {
           (ticket.userId?.name || "").toLowerCase().includes(searchTerm);
 
         const matchStatus =
-          !this.statusFilter || ticket.status === this.statusFilter;
+          !this.statusFilter ||
+          (this.statusFilter === "Open"
+            ? ticket.status !== "Completed"
+            : ticket.status === this.statusFilter);
 
         const matchPriority =
           !this.priorityFilter || ticket.priority === this.priorityFilter;
@@ -433,6 +443,13 @@ export default {
     paginatedTickets() {
       const start = (this.page - 1) * this.perPage;
       return this.filteredTickets.slice(start, start + this.perPage);
+    },
+  },
+
+  watch: {
+    initialStatus(newVal) {
+      this.statusFilter = newVal;
+      this.page = 1; // Reset to first page when filter changes
     },
   },
 

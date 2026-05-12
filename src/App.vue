@@ -22,17 +22,19 @@
           :isMobile="isMobile"
           @toggleSidebar="toggleSidebar" 
           :class="[
-            isMobile ? 'fixed inset-y-0 left-0 z-30' : 'relative',
+            isMobile ? 'fixed inset-y-0 left-0 z-[60]' : 'relative z-20 h-full shrink-0',
             isMobile && collapsed ? '-translate-x-full' : 'translate-x-0'
           ]"
         />
 
-        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-          <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
-              <component :is="Component" />
-            </transition>
-          </router-view>
+        <main class="flex-1 overflow-y-auto bg-slate-50 p-4 sm:p-6 lg:p-8">
+          <div class="max-w-7xl mx-auto min-h-full">
+            <router-view v-slot="{ Component }">
+              <transition name="fade" mode="out-in">
+                <component :is="Component" />
+              </transition>
+            </router-view>
+          </div>
         </main>
       </div>
     </template>
