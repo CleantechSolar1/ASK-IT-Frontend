@@ -3,6 +3,7 @@ import auth from "./modules/auth";
 import ticket from "./modules/ticket";
 import categories from "./modules/categories";
 import subAdmin from "./modules/subAdmin";
+import user from "./modules/user";
 
 export default createStore({
   state: {},
@@ -14,5 +15,6 @@ export default createStore({
     ticket,
     categories,
     subAdmin,
+    user,
   },
 });

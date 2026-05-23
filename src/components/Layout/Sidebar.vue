@@ -114,6 +114,7 @@ import {
   Ticket,
   PlusCircle,
   Users,
+  UserCheck,
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -157,6 +158,11 @@ export default {
           name: "Manage Admins",
           path: "/manage-admins",
           icon: Users,
+        });
+        items.push({
+          name: "Manage Users",
+          path: "/manage-users",
+          icon: UserCheck,
         });
       }
 
