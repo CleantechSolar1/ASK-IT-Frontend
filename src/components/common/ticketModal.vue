@@ -335,6 +335,71 @@
               </div>
             </div>
           </div>
+
+          <!-- Comments -->
+          <div class="pt-1 border-t border-slate-100">
+            <div class="flex items-center justify-between gap-3 mb-3">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Comments
+              </p>
+              <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+                {{ commentCount }}
+              </span>
+            </div>
+
+            <div v-if="commentCount > 0" class="space-y-3">
+              <div
+                v-for="comment in ticket.comments"
+                :key="comment._id"
+                class="bg-slate-50 border border-slate-100 rounded-xl p-4"
+              >
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 inline-flex items-center justify-center text-xs font-bold flex-shrink-0">
+                      {{ initials(comment.authorName) }}
+                    </span>
+                    <div class="min-w-0">
+                      <p class="text-sm font-semibold text-slate-800 truncate">
+                        {{ comment.authorName }}
+                      </p>
+                      <p class="text-xs text-slate-500 truncate">
+                        {{ comment.authorRole }}
+                      </p>
+                    </div>
+                  </div>
+                  <p class="text-xs text-slate-400 font-medium">
+                    {{ formatDateTime(comment.createdAt) }}
+                  </p>
+                </div>
+                <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
+                  {{ comment.message }}
+                </p>
+              </div>
+            </div>
+
+            <div v-else class="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-4 text-sm text-slate-500">
+              No comments yet.
+            </div>
+
+            <form v-if="canComment" class="mt-4 space-y-3" @submit.prevent="submitComment">
+              <textarea
+                v-model="commentDraft"
+                rows="3"
+                placeholder="Add a comment for the user..."
+                class="w-full bg-white border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 p-3 transition-all outline-none resize-none"
+                :disabled="isSubmittingComment"
+              ></textarea>
+              <div class="flex justify-end">
+                <button
+                  type="submit"
+                  :disabled="isSubmittingComment || !commentDraft.trim()"
+                  class="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm active:scale-95"
+                >
+                  {{ isSubmittingComment ? "Posting..." : "Post Comment" }}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
@@ -394,13 +459,28 @@ export default {
   props: {
     show: Boolean,
     ticket: Object,
+    canComment: {
+      type: Boolean,
+      default: false,
+    },
+    isSubmittingComment: {
+      type: Boolean,
+      default: false,
+    },
   },
+  emits: ["close", "add-comment"],
   data() {
     return {
       attachmentUrls: {},
       previewUrl: null,
       showPreviewOverlay: false,
+      commentDraft: "",
     };
+  },
+  computed: {
+    commentCount() {
+      return this.ticket?.comments?.length || 0;
+    },
   },
   watch: {
     show(newVal) {
@@ -412,6 +492,7 @@ export default {
           URL.revokeObjectURL(url),
         );
         this.attachmentUrls = {};
+        this.commentDraft = "";
       }
     },
   },
@@ -447,6 +528,30 @@ export default {
     closePreview() {
       this.showPreviewOverlay = false;
       this.previewUrl = null;
+    },
+    submitComment() {
+      const comment = this.commentDraft.trim();
+      if (!comment) return;
+
+      this.$emit("add-comment", comment);
+      this.commentDraft = "";
+    },
+    initials(name) {
+      if (!name) return "?";
+      return name
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0])
+        .join("")
+        .toUpperCase();
+    },
+    formatDateTime(date) {
+      if (!date) return "";
+      return new Date(date).toLocaleString("en-US", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
     },
     priorityClass(priority) {
       if (priority === "High" || priority === "Critical")

@@ -19,6 +19,7 @@
           <thead class="text-xs text-slate-500 bg-slate-50/80 uppercase font-semibold border-b border-slate-100">
             <tr>
               <th scope="col" class="px-6 py-4 tracking-wider">Ticket ID</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">Action</th>
               <th scope="col" class="px-6 py-4 tracking-wider">Category</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Priority</th>
               <th scope="col" class="px-6 py-4 tracking-wider">Assigned To</th>
@@ -35,6 +36,19 @@
             >
               <td class="px-6 py-4 border-l-4 border-transparent group-hover:border-blue-500 transition-colors">
                 <span class="font-mono font-bold text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg text-[11px] tracking-wider">{{ ticket.ticketId }}</span>
+              </td>
+
+              <td class="px-6 py-4 text-center">
+                <button
+                  @click="openTicket(ticket)"
+                  title="View Details"
+                  class="p-2 rounded-xl bg-slate-50 text-slate-500 border border-slate-100 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-all shadow-sm inline-flex items-center justify-center transform active:scale-95 mx-auto"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                  </svg>
+                </button>
               </td>
 
               <td class="px-6 py-4">
@@ -82,13 +96,26 @@
         <p class="text-slate-500 text-sm max-w-sm">You haven't submitted any support tickets yet. Click 'New Ticket' to get started.</p>
       </div>
     </div>
+
+    <ticketModal :show="showModal" :ticket="selectedTicket" @close="showModal = false" />
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import ticketModal from "@/components/common/ticketModal.vue";
 
 export default {
   name: "MyTicketsView",
+  components: {
+    ticketModal,
+  },
+
+  data() {
+    return {
+      showModal: false,
+      selectedTicket: {},
+    };
+  },
 
   computed: {
     ...mapGetters("ticket", ["tickets"]),
@@ -99,7 +126,16 @@ export default {
   },
 
   methods: {
-    ...mapActions("ticket", ["fetchMyTickets"]),
+    ...mapActions("ticket", ["fetchMyTickets", "fetchTicketById"]),
+
+    async openTicket(ticket) {
+      try {
+        this.selectedTicket = await this.fetchTicketById(ticket._id);
+      } catch (error) {
+        this.selectedTicket = ticket;
+      }
+      this.showModal = true;
+    },
 
     priorityClass(priority) {
       if (priority === "High" || priority === "Critical") return "bg-red-50 text-red-700 border-red-200";

@@ -12,6 +12,14 @@ export const getAllTicketsApi = () => {
   return api.get("/tickets/admin");
 };
 
+export const getTicketByIdApi = (ticketId) => {
+  return api.get(`/tickets/${ticketId}`);
+};
+
+export const addTicketCommentApi = (ticketId, payload) => {
+  return api.post(`/tickets/admin/${ticketId}/comments`, payload);
+};
+
 export const updateTicketStatusApi = (ticketId, payload) => {
   return api.patch(`/tickets/admin/${ticketId}/status`, payload);
 };

@@ -2,6 +2,8 @@ import {
   createTicketApi,
   getMyTicketsApi,
   getAllTicketsApi,
+  getTicketByIdApi,
+  addTicketCommentApi,
   updateTicketStatusApi,
   delegateTicketApi,
 } from "@/api/modules/ticket";
@@ -30,6 +32,17 @@ const actions = {
   async fetchAdminTickets({ commit }) {
     const res = await getAllTicketsApi();
     commit("SET_TICKETS", res.data.data);
+  },
+
+  async fetchTicketById(_, ticketId) {
+    const res = await getTicketByIdApi(ticketId);
+    return res.data.data;
+  },
+
+  async addTicketComment({ dispatch }, { ticketId, comment }) {
+    const res = await addTicketCommentApi(ticketId, { comment });
+    dispatch("fetchAdminTickets");
+    return res.data.data;
   },
 
   async updateTicketStatus({ dispatch }, payload) {

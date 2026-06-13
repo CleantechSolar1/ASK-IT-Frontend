@@ -385,7 +385,14 @@
     </div>
 
     <!-- Modal -->
-    <ticketModal :show="showModal" :ticket="selectedTicket" @close="showModal = false" />
+    <ticketModal
+      :show="showModal"
+      :ticket="selectedTicket"
+      :can-comment="true"
+      :is-submitting-comment="isSubmittingComment"
+      @add-comment="handleAddComment"
+      @close="showModal = false"
+    />
   </div>
 </template>
 
@@ -424,6 +431,7 @@ export default {
       perPage: 20,
       showModal: false,
       selectedTicket: {},
+      isSubmittingComment: false,
       // Options
       statusOptions: [
         { value: "Open", label: "Open Tickets" },
@@ -597,7 +605,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("ticket", ["updateTicketStatus", "delegateTicket"]),
+    ...mapActions("ticket", ["updateTicketStatus", "delegateTicket", "addTicketComment"]),
     ...mapActions("subAdmin", ["fetchSubAdmins"]),
 
     toggleDropdown(name) {
@@ -682,6 +690,35 @@ export default {
     openTicket(ticket) {
       this.selectedTicket = ticket;
       this.showModal = true;
+    },
+
+    async handleAddComment(comment) {
+      if (!this.selectedTicket?._id) return;
+
+      this.isSubmittingComment = true;
+      try {
+        const updatedTicket = await this.addTicketComment({
+          ticketId: this.selectedTicket._id,
+          comment,
+        });
+        this.selectedTicket = updatedTicket;
+        Swal.fire({
+          title: "Comment Added",
+          text: "The user can now see this comment on the ticket.",
+          icon: "success",
+          timer: 1800,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "Could not add comment",
+          text: error.response?.data?.message || "Please try again.",
+          icon: "error",
+          confirmButtonColor: "#EF4444",
+        });
+      } finally {
+        this.isSubmittingComment = false;
+      }
     },
 
     async showExportOptions() {
