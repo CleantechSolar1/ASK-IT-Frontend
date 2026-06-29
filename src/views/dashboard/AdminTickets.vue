@@ -242,6 +242,7 @@
           <thead class="text-xs text-slate-500 bg-slate-50/80 uppercase font-semibold border-b border-slate-100">
             <tr>
               <th scope="col" class="px-6 py-4 tracking-wider">Ticket ID</th>
+              <th scope="col" class="px-6 py-4 tracking-wider">Created</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Action</th>
               <th scope="col" class="px-6 py-4 tracking-wider">Raised By</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Assigned To</th>
@@ -262,6 +263,10 @@
             >
               <td class="px-6 py-4 border-l-4 border-transparent group-hover:border-blue-500 transition-colors">
                 <span class="font-mono font-bold text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg text-[11px] tracking-wider">{{ ticket.ticketId }}</span>
+              </td>
+
+              <td class="px-6 py-4 text-slate-500 font-medium">
+                {{ formatDate(ticket.createdAt) }}
               </td>
 
               <td class="px-6 py-4 text-center">
@@ -682,6 +687,15 @@ export default {
       if (status === "Received") return "bg-slate-500 shadow-[0_0_4px_rgba(100,116,139,0.5)]";
       if (status === "In Progress") return "bg-blue-500 shadow-[0_0_4px_rgba(59,130,246,0.5)]";
       return "bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.5)]";
+    },
+
+    formatDate(date) {
+      if (!date) return "N/A";
+      return new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
     },
 
     nextPage() { if (this.page < this.totalPages) this.page++; },
