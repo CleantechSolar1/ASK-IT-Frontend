@@ -250,6 +250,7 @@
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Priority</th>
               <th scope="col" class="px-6 py-4 tracking-wider">Department</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Status</th>
+              <th scope="col" class="px-6 py-4 tracking-wider text-center">Last Action By</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Update Status</th>
               <th scope="col" class="px-6 py-4 tracking-wider text-center">Delegate</th>
             </tr>
@@ -310,6 +311,15 @@
                   <span class="w-1.5 h-1.5 rounded-full mr-1.5" :class="statusDotClass(ticket.status)"></span>
                   {{ ticket.status }}
                 </span>
+              </td>
+
+              <td class="px-6 py-4 text-center">
+                <div class="flex flex-col items-center gap-0.5">
+                  <span class="font-semibold text-slate-700">{{ lastActionName(ticket) }}</span>
+                  <span v-if="ticket.lastActionBy?.at" class="text-[11px] font-medium text-slate-400">
+                    {{ formatDate(ticket.lastActionBy.at) }}
+                  </span>
+                </div>
               </td>
 
               <td class="px-6 py-4 text-center">
@@ -696,6 +706,10 @@ export default {
         month: "short",
         day: "numeric",
       });
+    },
+
+    lastActionName(ticket) {
+      return ticket.lastActionBy?.name || "-";
     },
 
     nextPage() { if (this.page < this.totalPages) this.page++; },

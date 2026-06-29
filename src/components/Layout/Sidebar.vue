@@ -115,6 +115,7 @@ import {
   PlusCircle,
   Users,
   UserCheck,
+  Activity,
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -172,6 +173,13 @@ export default {
         icon: PlusCircle,
       });
       items.push({ name: "My Tickets", path: "/my-tickets", icon: Ticket });
+      if (this.isAdmin) {
+        items.push({
+          name: "Admin Activity",
+          path: "/admin-activity",
+          icon: Activity,
+        });
+      }
 
       return items;
     },

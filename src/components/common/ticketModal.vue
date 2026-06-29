@@ -336,6 +336,49 @@
             </div>
           </div>
 
+          <!-- Admin Activity -->
+          <div v-if="canComment" class="pt-1 border-t border-slate-100">
+            <div class="flex items-center justify-between gap-3 mb-3">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Admin Activity
+              </p>
+              <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+                {{ actionLogCount }}
+              </span>
+            </div>
+
+            <div v-if="actionLogCount > 0" class="space-y-3">
+              <div
+                v-for="log in orderedActionLogs"
+                :key="log._id"
+                class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm"
+              >
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                  <div class="flex items-start gap-3 min-w-0">
+                    <span class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-700 inline-flex items-center justify-center text-xs font-bold flex-shrink-0">
+                      {{ initials(log.actorName) }}
+                    </span>
+                    <div class="min-w-0">
+                      <p class="text-sm font-semibold text-slate-800">
+                        {{ actionTitle(log) }}
+                      </p>
+                      <p class="text-xs text-slate-500 mt-1">
+                        {{ actionDescription(log) }}
+                      </p>
+                    </div>
+                  </div>
+                  <p class="text-xs text-slate-400 font-medium whitespace-nowrap">
+                    {{ formatDateTime(log.createdAt) }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-4 text-sm text-slate-500">
+              No admin activity recorded yet.
+            </div>
+          </div>
+
           <!-- Comments -->
           <div class="pt-1 border-t border-slate-100">
             <div class="flex items-center justify-between gap-3 mb-3">
@@ -481,6 +524,14 @@ export default {
     commentCount() {
       return this.ticket?.comments?.length || 0;
     },
+    actionLogCount() {
+      return this.ticket?.actionLogs?.length || 0;
+    },
+    orderedActionLogs() {
+      return [...(this.ticket?.actionLogs || [])].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      );
+    },
   },
   watch: {
     show(newVal) {
@@ -552,6 +603,31 @@ export default {
         dateStyle: "medium",
         timeStyle: "short",
       });
+    },
+    actionTitle(log) {
+      if (log.action === "status_updated") return "Status changed";
+      if (log.action === "delegated") return "Ticket delegated";
+      if (log.action === "commented") return "Comment added";
+      return "Ticket updated";
+    },
+    actionDescription(log) {
+      const actor = log.actorName || log.actorEmail || "Unknown admin";
+
+      if (log.action === "status_updated") {
+        return `${actor} changed status from ${log.fromStatus || "N/A"} to ${log.toStatus || "N/A"}.`;
+      }
+
+      if (log.action === "delegated") {
+        const fromName = log.delegatedFromName || log.delegatedFromEmail || "Unassigned";
+        const toName = log.delegatedToName || log.delegatedToEmail || "Unknown";
+        return `${actor} delegated from ${fromName} to ${toName}.`;
+      }
+
+      if (log.action === "commented") {
+        return `${actor} added a comment.`;
+      }
+
+      return `${actor} updated this ticket.`;
     },
     priorityClass(priority) {
       if (priority === "High" || priority === "Critical")

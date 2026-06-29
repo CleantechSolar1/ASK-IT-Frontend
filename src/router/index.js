@@ -52,6 +52,12 @@ const routes = [
     component: () => import("@/views/dashboard/ManageUsers.vue"),
     meta: { requiresAuth: true, requiresAdmin: true },
   },
+  {
+    path: "/admin-activity",
+    name: "AdminActivity",
+    component: () => import("@/views/dashboard/AdminActivity.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
 ];
 
 const router = createRouter({
