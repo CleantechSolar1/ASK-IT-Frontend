@@ -114,7 +114,7 @@
             >
               <option value="" disabled>Select Category</option>
               <option
-                v-for="cat in categories"
+                v-for="cat in categoryOptions"
                 :key="cat._id"
                 :value="cat.name"
               >
@@ -335,9 +335,13 @@
               class="bg-slate-50/50 border border-slate-200 text-slate-800 text-sm rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 block w-full pl-11 p-4 transition-all outline-none appearance-none hover:bg-slate-50"
             >
               <option value="" disabled>Select Priority</option>
-              <option>Low</option>
-              <option>Medium</option>
-              <option>High</option>
+              <option
+                v-for="option in priorityOptions"
+                :key="option"
+                :value="option"
+              >
+                {{ option }}
+              </option>
             </select>
             <!-- Custom Dropdown Arrow -->
             <div
@@ -572,6 +576,26 @@ export default {
     ...mapGetters("categories", ["categories"]),
     ...mapGetters("auth", ["currentUser"]),
 
+    categoryOptions() {
+      const options = [...(this.categories || [])];
+      if (!options.some((cat) => cat.name === "Sim Card")) {
+        options.push({ _id: "sim-card", name: "Sim Card" });
+      }
+      return options;
+    },
+
+    canUseAlletechPriority() {
+      return this.currentUser?.role?.toLowerCase() === "admin";
+    },
+
+    priorityOptions() {
+      const options = ["Low", "Medium", "High"];
+      if (this.canUseAlletechPriority) {
+        options.push("Alletech");
+      }
+      return options;
+    },
+
     subCategoryOptions() {
       const map = {
         "Hardware Issue": [
@@ -597,7 +621,7 @@ export default {
           "Login Issues",
           "Others",
         ],
-        "Business Central": ["Login Issues", "Access Request", "Others"],
+        "Business Central": ["Login Issues", "Access Request", "Bug", "Change Request", "Enhancement", "Permission Request", "Workflow Issues", "Error", "Others"],
         Application: [
           "App Installation",
           "Foxit License Requirement",
@@ -636,6 +660,11 @@ export default {
   watch: {
     category() {
       this.subCategory = "";
+    },
+    canUseAlletechPriority(canUse) {
+      if (!canUse && this.priority === "Alletech") {
+        this.priority = "";
+      }
     },
   },
 

@@ -455,7 +455,7 @@ export default {
         { value: "Pending", label: "Pending" },
         { value: "Completed", label: "Completed" },
       ],
-      priorityOptions: ["Low", "Medium", "High"],
+      priorityOptions: ["Low", "Medium", "High", "Alletech"],
       departments: [
         "IT",
         "FINANCE",
