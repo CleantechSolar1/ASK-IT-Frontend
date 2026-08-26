@@ -35,6 +35,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/policy-assistant",
+    name: "PolicyAssistant",
+    component: () => import("@/views/dashboard/PolicyAssistant.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,

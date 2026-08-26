@@ -119,6 +119,7 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  Bot,
 } from "lucide-vue-next";
 import { mapGetters, mapActions } from "vuex";
 
@@ -173,6 +174,11 @@ export default {
         icon: PlusCircle,
       });
       items.push({ name: "My Tickets", path: "/my-tickets", icon: Ticket });
+      items.push({
+        name: "Policy Assistant",
+        path: "/policy-assistant",
+        icon: Bot,
+      });
       if (this.isAdmin) {
         items.push({
           name: "Admin Activity",

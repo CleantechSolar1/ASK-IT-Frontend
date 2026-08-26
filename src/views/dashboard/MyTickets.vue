@@ -35,7 +35,7 @@
               class="bg-white hover:bg-slate-50/60 transition-all duration-300 group hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-[1px]"
             >
               <td class="px-6 py-4 border-l-4 border-transparent group-hover:border-blue-500 transition-colors">
-                <span class="font-mono font-bold text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg text-[11px] tracking-wider">{{ ticket.ticketId }}</span>
+                <span class="font-sans font-bold text-slate-600 bg-slate-100/80 px-3 py-1.5 rounded-lg text-[11px] tracking-wider">{{ ticket.ticketId }}</span>
               </td>
 
               <td class="px-6 py-4 text-center">

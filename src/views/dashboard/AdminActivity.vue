@@ -95,7 +95,7 @@
               </div>
               <div class="min-w-0">
                 <div class="flex flex-wrap items-center gap-2">
-                  <span class="font-mono font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg text-[11px]">
+                  <span class="font-sans font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg text-[11px]">
                     {{ log.ticketId }}
                   </span>
                   <span class="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold border" :class="actionClass(log.action)">

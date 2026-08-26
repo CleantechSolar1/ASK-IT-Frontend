@@ -68,7 +68,7 @@
                 Ticket ID
               </p>
               <p
-                class="font-mono font-bold text-slate-800 bg-slate-100 px-3 py-1.5 rounded-lg inline-block text-sm"
+                class="font-sans font-bold text-slate-800 bg-slate-100 px-3 py-1.5 rounded-lg inline-block text-sm"
               >
                 {{ ticket.ticketId }}
               </p>
