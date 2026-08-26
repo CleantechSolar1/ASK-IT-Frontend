@@ -3,9 +3,10 @@
     <!-- Premium Mesh Gradient Background -->
     <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/10 blur-[120px] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-400/10 blur-[120px] pointer-events-none"></div>
-
+<!-- test comment for deployment -->
     <template v-if="!isAuthPage">
       <Navbar @toggleSidebar="toggleSidebar" />
+      
 
       <div class="flex flex-1 overflow-hidden z-10 relative">
         <!-- Sidebar Backdrop for Mobile -->
