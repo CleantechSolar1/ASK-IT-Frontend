@@ -4,7 +4,7 @@
     <div class="mb-8">
       <h2 class="text-3xl font-bold tracking-tight text-slate-800">Admin Management</h2>
       <p class="text-slate-500 mt-1">
-        Manage up to <span class="font-semibold text-blue-600">6</span> sub-admins who can access the admin dashboard.
+        Manage up to <span class="font-semibold text-blue-600">7</span> sub-admins who can access the admin dashboard.
       </p>
     </div>
 
@@ -23,13 +23,13 @@
 
       <!-- Limit Warning -->
       <div
-        v-if="subAdminCount >= 6"
+        v-if="subAdminCount >= 7"
         class="mb-5 bg-amber-50 border border-amber-200 rounded-xl p-3.5 flex items-center gap-3 text-amber-800 text-sm font-medium"
       >
         <svg class="w-5 h-5 shrink-0 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
         </svg>
-        Maximum of 6 sub-admins reached. Remove one before adding another.
+        Maximum of 7 sub-admins reached. Remove one before adding another.
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
@@ -88,7 +88,7 @@
 
       <button
         @click="handleAdd"
-        :disabled="!form.email || addLoading || subAdminCount >= 6"
+        :disabled="!form.email || addLoading || subAdminCount >= 7"
         class="bg-blue-600 text-white font-semibold rounded-xl px-6 py-3 hover:bg-blue-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2 text-sm shadow-[0_4px_14px_rgba(37,99,235,0.3)]"
       >
         <svg v-if="addLoading" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
@@ -107,7 +107,7 @@
       <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
         <h3 class="text-lg font-bold text-slate-800">Current Sub-Admins</h3>
         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
-          {{ subAdminCount }} / 6
+          {{ subAdminCount }} / 7
         </span>
       </div>
 
@@ -127,7 +127,7 @@
           </svg>
         </div>
         <p class="text-sm font-semibold text-slate-700">No sub-admins yet</p>
-        <p class="text-xs text-slate-400 mt-1">Add up to 6 admins using the form above.</p>
+        <p class="text-xs text-slate-400 mt-1">Add up to 7 admins using the form above.</p>
       </div>
 
       <!-- List -->
