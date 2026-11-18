@@ -14,7 +14,16 @@
 
     <!-- Table Container -->
     <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden">
-      <div class="overflow-x-auto">
+      <p v-if="loading" role="status" class="p-6 text-sm text-slate-600">
+        Loading tickets…
+      </p>
+      <div v-else-if="loadError" class="flex flex-wrap items-center gap-3 p-6">
+        <p role="alert" class="text-sm text-red-700">{{ loadError }}</p>
+        <button type="button" class="text-sm font-semibold text-blue-700 hover:underline" @click="loadTickets">
+          Try again
+        </button>
+      </div>
+      <div v-else-if="tickets.length" class="overflow-x-auto">
         <table class="w-full text-sm text-left whitespace-nowrap">
           <thead class="text-xs text-slate-500 bg-slate-50/80 uppercase font-semibold border-b border-slate-100">
             <tr>
@@ -88,7 +97,7 @@
       </div>
       
       <!-- Empty State -->
-      <div v-if="!tickets || tickets.length === 0" class="py-16 flex flex-col items-center justify-center text-center">
+      <div v-else class="py-16 flex flex-col items-center justify-center text-center">
         <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
           <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
         </div>
@@ -101,7 +110,7 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import ticketModal from "@/components/common/ticketModal.vue";
 
 export default {
@@ -112,21 +121,32 @@ export default {
 
   data() {
     return {
+      tickets: [],
+      loading: true,
+      loadError: "",
       showModal: false,
       selectedTicket: {},
     };
   },
 
-  computed: {
-    ...mapGetters("ticket", ["tickets"]),
-  },
-
   mounted() {
-    this.fetchMyTickets();
+    this.loadTickets();
   },
 
   methods: {
     ...mapActions("ticket", ["fetchMyTickets", "fetchTicketById"]),
+
+    async loadTickets() {
+      this.loading = true;
+      this.loadError = "";
+      try {
+        this.tickets = await this.fetchMyTickets();
+      } catch {
+        this.loadError = "Could not load your tickets.";
+      } finally {
+        this.loading = false;
+      }
+    },
 
     async openTicket(ticket) {
       try {

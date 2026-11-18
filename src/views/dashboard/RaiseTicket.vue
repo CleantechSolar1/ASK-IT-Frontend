@@ -577,8 +577,23 @@ export default {
     ...mapGetters("auth", ["currentUser"]),
 
     categoryOptions() {
-      const options = [...(this.categories || [])];
-      if (!options.some((cat) => cat.name === "Sim Card")) {
+      const options = [];
+      const categoryNames = new Set();
+
+      for (const cat of this.categories || []) {
+        const name =
+          cat.name?.trim().toLowerCase() === "business central"
+            ? "Business Central - ERP"
+            : cat.name;
+        const normalizedName = name?.trim().toLowerCase();
+
+        if (!normalizedName || categoryNames.has(normalizedName)) continue;
+
+        categoryNames.add(normalizedName);
+        options.push({ ...cat, name });
+      }
+
+      if (!categoryNames.has("sim card")) {
         options.push({ _id: "sim-card", name: "Sim Card" });
       }
       return options;
@@ -597,6 +612,17 @@ export default {
     },
 
     subCategoryOptions() {
+      const businessCentralOptions = [
+        "Login Issues",
+        "Access Request",
+        "Bug",
+        "Change Request",
+        "Enhancement",
+        "Permission Request",
+        "Workflow Issues",
+        "Error",
+        "Others",
+      ];
       const map = {
         "Hardware Issue": [
           "Accessories",
@@ -621,7 +647,8 @@ export default {
           "Login Issues",
           "Others",
         ],
-        "Business Central": ["Login Issues", "Access Request", "Bug", "Change Request", "Enhancement", "Permission Request", "Workflow Issues", "Error", "Others"],
+        "Business Central": businessCentralOptions,
+        "Business Central - ERP": businessCentralOptions,
         Application: [
           "App Installation",
           "Foxit License Requirement",

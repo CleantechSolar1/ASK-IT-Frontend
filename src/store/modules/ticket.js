@@ -19,14 +19,14 @@ const mutations = {
 };
 
 const actions = {
-  async createTicket({ commit }, payload) {
+  async createTicket(_, payload) {
     const res = await createTicketApi(payload);
-    commit("SET_TICKETS", res.data.data);
+    return res.data.data;
   },
 
-  async fetchMyTickets({ commit }) {
+  async fetchMyTickets() {
     const res = await getMyTicketsApi();
-    commit("SET_TICKETS", res.data.data);
+    return res.data.data.filter((ticket) => ticket?._id);
   },
 
   async fetchAdminTickets({ commit }) {

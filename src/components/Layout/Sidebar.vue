@@ -115,6 +115,7 @@ import {
   PlusCircle,
   Users,
   UserCheck,
+  Mail,
   Activity,
   LogOut,
   ChevronLeft,
@@ -165,6 +166,11 @@ export default {
           name: "Manage Users",
           path: "/manage-users",
           icon: UserCheck,
+        });
+        items.push({
+          name: "Email Routing",
+          path: "/email-routing",
+          icon: Mail,
         });
       }
 

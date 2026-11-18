@@ -59,6 +59,12 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true },
   },
   {
+    path: "/email-routing",
+    name: "EmailRouting",
+    component: () => import("@/views/dashboard/EmailRouting.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
     path: "/admin-activity",
     name: "AdminActivity",
     component: () => import("@/views/dashboard/AdminActivity.vue"),
